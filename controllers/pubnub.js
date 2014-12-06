@@ -96,8 +96,8 @@ var questionAry = [
 
 
 
-setInterval( function() {
+/*setInterval( function() {
     exports.publishPubnub('myfirstgame', questionAry[Math.floor(Math.random() * 4)] );
 }, 5000 );
-
+*/
 
