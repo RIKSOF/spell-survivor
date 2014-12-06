@@ -1,77 +1,155 @@
-<!doctype html>
+<!DOCTYPE html5>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Spell Survivor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <title>Spell Survivor</title>
+
 </head>
 
 <body>
+<div id="home"></div>
+<script type="text/template" id="homeTemplate">
+	<section class="upperpart">
+		<div class="sun"></div>
+		<div class="mountainlarge"><img src="images/mountain_large.png" /></div>
+		<div class="mountainsmall"><img src="images/mountain_small.png" /></div>
+	</section>
+	<section class="lowerpart">
+		<div class="river"></div>
+		<div class="sand"></div>
+		<div class="mountainlargeshadow"><img src="images/mountain_largeshadow.png" /></div>
+		<div class="mountainsmallshadow"><img src="images/mountain_smallshadow.png" /></div>
+	</section>
+	<section class="plankboard">
+		<div class="timerMain">
+			<div class="timer">15</div>
+		</div>
+		<div class="plank">
+			<ul class="options">
+				<li><a href="#">Apple</a></li>
+				<li><a href="#">Apple</a></li>
+				<li><a href="#">Apple</a></li>
+				<li><a href="#">Apple</a></li>
+			</ul>
+			<div class="speakericon"><a href="#"><img src="images/speaker.png"></a></div>
+		</div>
+	</section>
+	<section class="scoreboard">0000001</section>
+	<section class="userinfo">
+		<div class="userimg"><a href="#"><img src="images/img.jpg" /></a></div>
+		<div class="username"><a href="#">Sharjeelkhan</a></div>
+	</section>
+	<section class="backbutton">
+		<a href="#"><img src="images/backbutton.png" /></a>
+	</section>
+	<section class="cactus">
+	</section>
+</script>
 
-<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script src="js/pubnub.min.js"></script>
+<script src="js/lib/jquery-1.11.1.min.js"></script>
+<script src="js/lib/md5.js"></script>
+
+<script src="js/lib/json2.js"></script>
+<script src="js/lib/underscore.js"></script>
+<script src="js/lib/backbone-min.js"></script>
+
+<!-- Backnone Model -->
+<!--<script type="text/javascript" src="assets/js/backbonejs/models/User.js"></script>-->
+    
+<!-- Backnone views -->
+<script src="js/backbonejs/views/Home.js"></script>
+
+<script src="js/lib/pubnub.min.js"></script>
+<script src="js/riksof-pubnub.js"></script>
+<script src="js/app.js"></script>
+
+
 <script>
-$(document).ready(function(){
-
-	var session = getSession();
-	
-	var channel = "spell-survivor";
-	var chatName = "";
-
-	/*var PUBNUB = PUBNUB.init({
-	publish_key: 'demo',
-	subscribe_key: 'demo'
-	});
-	*/
-
-	PUBNUB.subscribe({
-		channel  : channel,
-		callback : function(message) { 
-			$("#incomingMessages").append(
-				"<div class='message'><span class='username'>" +
-				(message.chatName || 'Anonymous') +
-				"</span> : " +
-				(message.text || ' ') +
-				"</div>"
-			);
-	
-			$("#incomingMessages").scrollTop($("#incomingMessages")[0].scrollHeight);
-		}
-	});
-
-	$("#chatNameButton").click(function(){
-		chatName = $("#chatNameText").val();
-		if(chatName.length <= 0) chatName = "unknown";
-			$(location).attr('href',"#chatPage");
-	});
-
-	$("#messageText").bind( 'keydown', function(e) {
-		if ((e.keyCode || e.charCode) !== 13) return true;
-		$("#chatSendButton").click();
-		return false;
-	});
-
-	$("#chatSendButton").click(function(){
-		PUBNUB.publish({
-			channel : channel,
-			message : {
-				chatName : chatName,
-				text     : $("#messageText").val()
-			},
-			callback : function(info) {
-				console.log(info);
-				if (!info[0]) {
-					console.log( "err unable to publish");
-				}
-				else {
-					console.log( "published successfully" );
-				}
-			}
-		});
-
-		$("#messageText").val("");
-	});
-
-});
+//$(document).ready(function(){
+//
+//	var session = getSession();
+//	
+//	var channel = "spell-survivor";
+//	var chatName = "";
+//
+//	var pubnub = PUBNUB.init({
+//		publish_key: 'demo',
+//		subscribe_key: 'demo'
+//	});
+//
+//	pubnub.subscribe({
+//		channel  : channel,
+//		callback : function(message) { 
+//		console.log(message);
+//			if ( message.sender == "server" ) {
+//							var response = {
+//					userId: "anonymous",
+//					hashUid:session,
+//					channel: channel,
+//					id: message.id,
+//					sel_option:  Math.floor(Math.random() * 4) + 1,
+//					sender: "user"
+//				};
+//				
+//				pubnub.publish({
+//					channel: channel,
+//					message:response,
+//					callback: function (m, e, c) {
+//						if (c && m) {
+//							console.log(JSON.stringify(c + ": " + m));
+//							// Only one argument
+//						} else if (m) {
+//							console.log(JSON.stringify(m));
+//						}
+//					},
+//					error: function (m, e, c) {
+//						if (c && m) {
+//							console.log(JSON.stringify(c + ": " + m));
+//							// Only one argument
+//						} else if (m) {
+//							console.log(JSON.stringify(m));
+//						}
+//					}
+//				});
+//			}
+//		}
+//	});
+//
+//	$("#chatNameButton").click(function(){
+//		chatName = $("#chatNameText").val();
+//		if(chatName.length <= 0) chatName = "unknown";
+//			$(location).attr('href',"#chatPage");
+//	});
+//
+//	$("#messageText").bind( 'keydown', function(e) {
+//		if ((e.keyCode || e.charCode) !== 13) return true;
+//		$("#chatSendButton").click();
+//		return false;
+//	});
+//
+//	$("#chatSendButton").click(function(){
+//		PUBNUB.publish({
+//			channel : channel,
+//			message : {
+//				chatName : chatName,
+//				text     : $("#messageText").val()
+//			},
+//			callback : function(info) {
+//				console.log(info);
+//				if (!info[0]) {
+//					console.log( "err unable to publish");
+//				}
+//				else {
+//					console.log( "published successfully" );
+//				}
+//			}
+//		});
+//
+//		$("#messageText").val("");
+//	});
+//
+//});
 </script>   
 </body>
 </html>
