@@ -25,10 +25,11 @@ var connectAssets = require('connect-assets');
  * Controllers (route handlers).
  */
 
-var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
-var apiController = require('./controllers/api');
-var contactController = require('./controllers/contact');
+//var homeController = require('./controllers/home');
+//var userController = require('./controllers/user');
+//var apiController = require('./controllers/api');
+//var contactController = require('./controllers/contact');
+var riksofController = require('./controllers/riksof');
 
 /**
  * API keys and Passport configuration.
@@ -109,7 +110,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Main routes.
  */
 
-app.get('/', homeController.index);
+/*app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -126,12 +127,12 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
-
+*/
 /**
  * API examples routes.
  */
 
-app.get('/api', apiController.getApi);
+/*app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/aviary', apiController.getAviary);
@@ -154,12 +155,20 @@ app.post('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, 
 app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getLinkedin);
 app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getInstagram);
 app.get('/api/yahoo', apiController.getYahoo);
+*/
+
+/**
+ * RIKSOF API's
+ *
+ **/
+app.get('/riksof/words', riksofController.getWords);
+
 
 /**
  * OAuth sign-in routes.
  */
 
-app.get('/auth/instagram', passport.authenticate('instagram'));
+/*app.get('/auth/instagram', passport.authenticate('instagram'));
 app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
@@ -183,11 +192,11 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
-
+*/
 /**
  * OAuth authorization routes for API examples.
  */
-
+/*
 app.get('/auth/foursquare', passport.authorize('foursquare'));
 app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureRedirect: '/api' }), function(req, res) {
   res.redirect('/api/foursquare');
@@ -200,7 +209,7 @@ app.get('/auth/venmo', passport.authorize('venmo', { scope: 'make_payments acces
 app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '/api' }), function(req, res) {
   res.redirect('/api/venmo');
 });
-
+*/
 /**
  * 500 Error Handler.
  */
