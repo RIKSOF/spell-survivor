@@ -89,15 +89,15 @@ function getUniqueId(){
 
 var questionAry = [
  { "id":getUniqueId(), "q":"Apple", "options":["Aple", "Aaple", "Apele", "Apple"]}
-,{ "id":getUniqueId(), "q":"Ball", "options":["Aple", "Aaple", "Ball", "Apple"]}
-,{ "id":getUniqueId(), "q":"Cat", "options":["Aple", "Aaple", "Cat", "Apple"]}
-,{ "id":getUniqueId(), "q":"Doll", "options":["Aple", "Aaple", "Apele", "Doll"]}
+,{ "id":getUniqueId(), "q":"Ball", "options":["Boll", "Balle", "Ball", "Bale"]}
+,{ "id":getUniqueId(), "q":"Cat", "options":["Cet", "Kat", "Cte", "Cat"]}
+,{ "id":getUniqueId(), "q":"Doll", "options":["Dole", "Dule", "Doll", "Dolle"]}
 ];
 
 
-/*
+
 setInterval( function() {
-    exports.publishPubnub('myfirstgame', questionAry[0]);
+    exports.publishPubnub('myfirstgame', questionAry[Math.floor(Math.random() * 4)] );
 }, 5000 );
-*/
+
 
