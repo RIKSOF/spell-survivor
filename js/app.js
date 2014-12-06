@@ -45,8 +45,6 @@ var AppRouter = Backbone.Router.extend({
 		"home" : "home",
 	},
 	home : function() {
-		
 		app.home = new HomeView({ el: $("#home") });
-		app.home.render();
 	},
 });

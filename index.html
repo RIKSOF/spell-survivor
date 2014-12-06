@@ -55,7 +55,7 @@
 <script src="js/lib/backbone-min.js"></script>
 
 <!-- Backnone Model -->
-<!--<script type="text/javascript" src="assets/js/backbonejs/models/User.js"></script>-->
+<script type="text/javascript" src="assets/js/backbonejs/models/Question.js"></script>
     
 <!-- Backnone views -->
 <script src="js/backbonejs/views/Home.js"></script>
@@ -64,92 +64,5 @@
 <script src="js/riksof-pubnub.js"></script>
 <script src="js/app.js"></script>
 
-
-<script>
-//$(document).ready(function(){
-//
-//	var session = getSession();
-//	
-//	var channel = "spell-survivor";
-//	var chatName = "";
-//
-//	var pubnub = PUBNUB.init({
-//		publish_key: 'demo',
-//		subscribe_key: 'demo'
-//	});
-//
-//	pubnub.subscribe({
-//		channel  : channel,
-//		callback : function(message) { 
-//		console.log(message);
-//			if ( message.sender == "server" ) {
-//							var response = {
-//					userId: "anonymous",
-//					hashUid:session,
-//					channel: channel,
-//					id: message.id,
-//					sel_option:  Math.floor(Math.random() * 4) + 1,
-//					sender: "user"
-//				};
-//				
-//				pubnub.publish({
-//					channel: channel,
-//					message:response,
-//					callback: function (m, e, c) {
-//						if (c && m) {
-//							console.log(JSON.stringify(c + ": " + m));
-//							// Only one argument
-//						} else if (m) {
-//							console.log(JSON.stringify(m));
-//						}
-//					},
-//					error: function (m, e, c) {
-//						if (c && m) {
-//							console.log(JSON.stringify(c + ": " + m));
-//							// Only one argument
-//						} else if (m) {
-//							console.log(JSON.stringify(m));
-//						}
-//					}
-//				});
-//			}
-//		}
-//	});
-//
-//	$("#chatNameButton").click(function(){
-//		chatName = $("#chatNameText").val();
-//		if(chatName.length <= 0) chatName = "unknown";
-//			$(location).attr('href',"#chatPage");
-//	});
-//
-//	$("#messageText").bind( 'keydown', function(e) {
-//		if ((e.keyCode || e.charCode) !== 13) return true;
-//		$("#chatSendButton").click();
-//		return false;
-//	});
-//
-//	$("#chatSendButton").click(function(){
-//		PUBNUB.publish({
-//			channel : channel,
-//			message : {
-//				chatName : chatName,
-//				text     : $("#messageText").val()
-//			},
-//			callback : function(info) {
-//				console.log(info);
-//				if (!info[0]) {
-//					console.log( "err unable to publish");
-//				}
-//				else {
-//					console.log( "published successfully" );
-//				}
-//			}
-//		});
-//
-//		$("#messageText").val("");
-//	});
-//
-//});
-</script>   
 </body>
 </html>

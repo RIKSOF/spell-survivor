@@ -3,6 +3,7 @@
 //	subscribe_key: 'demo'
 //});
 
+
 function RS_pnSubscribe(channel) {
 
 	PUBNUB.subscribe({
