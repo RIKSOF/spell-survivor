@@ -4,6 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <title>Spell Survivor</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.timer.js"></script>
+<script type="text/javascript" src="js/timer.js"></script>
+<script>
+    $(document).ready(function() {
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
+        audioElement.setAttribute('autoplay', 'autoplay');
+        //audioElement.load()
+
+        $.get();
+
+        audioElement.addEventListener("load", function() {
+            audioElement.play();
+        }, true);
+		setInterval(function(){ 
+			if(counting.Timer.isActive)
+				audioElement.play(); 
+		}, 5000);
+		//console.log();
+       /* $('.speakericon').on("click",function() {
+            audioElement.play();
+        });*/
+    });
+</script>     
 </head>
 
 <body>
@@ -20,7 +45,7 @@
 </section>
 <section class="plankboard">
 	<div class="timerMain">
-    	<div class="timer">15</div>
+    	<div id="countdown" class="timer">15</div>
     </div>
 	<div class="plank">
     	<ul class="options">
