@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Spell Survivor</title>
+</head>
+
+<body>
+
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="js/pubnub.min.js"></script>
+<script>
+$(document).ready(function(){
+
+	var session = getSession();
+	
+	var channel = "spell-survivor";
+	var chatName = "";
+
+	/*var PUBNUB = PUBNUB.init({
+	publish_key: 'demo',
+	subscribe_key: 'demo'
+	});
+	*/
+
+	PUBNUB.subscribe({
+		channel  : channel,
+		callback : function(message) { 
+			$("#incomingMessages").append(
+				"<div class='message'><span class='username'>" +
+				(message.chatName || 'Anonymous') +
+				"</span> : " +
+				(message.text || ' ') +
+				"</div>"
+			);
+	
+			$("#incomingMessages").scrollTop($("#incomingMessages")[0].scrollHeight);
+		}
+	});
+
+	$("#chatNameButton").click(function(){
+		chatName = $("#chatNameText").val();
+		if(chatName.length <= 0) chatName = "unknown";
+			$(location).attr('href',"#chatPage");
+	});
+
+	$("#messageText").bind( 'keydown', function(e) {
+		if ((e.keyCode || e.charCode) !== 13) return true;
+		$("#chatSendButton").click();
+		return false;
+	});
+
+	$("#chatSendButton").click(function(){
+		PUBNUB.publish({
+			channel : channel,
+			message : {
+				chatName : chatName,
+				text     : $("#messageText").val()
+			},
+			callback : function(info) {
+				console.log(info);
+				if (!info[0]) {
+					console.log( "err unable to publish");
+				}
+				else {
+					console.log( "published successfully" );
+				}
+			}
+		});
+
+		$("#messageText").val("");
+	});
+
+});
+</script>   
+</body>
+</html>
