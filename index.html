@@ -23,14 +23,14 @@
 	</section>
 	<section class="plankboard">
 		<div class="timerMain">
-			<div class="timer">15</div>
+			<div id="countdown" class="timer">15</div>
 		</div>
 		<div class="plank">
 			<ul class="options">
-				<li><a href="#">Apple</a></li>
-				<li><a href="#">Apple</a></li>
-				<li><a href="#">Apple</a></li>
-				<li><a href="#">Apple</a></li>
+				<li><a href="#" id="options1">Apple</a></li>
+				<li><a href="#" id="options2">Apple</a></li>
+				<li><a href="#" id="options3">Apple</a></li>
+				<li><a href="#" id="options4">Apple</a></li>
 			</ul>
 			<div class="speakericon"><a href="#"><img src="images/speaker.png"></a></div>
 		</div>
@@ -50,12 +50,15 @@
 <script src="js/lib/jquery-1.11.1.min.js"></script>
 <script src="js/lib/md5.js"></script>
 
+<script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+<script type="text/javascript" src="js/timer.js"></script>
+
 <script src="js/lib/json2.js"></script>
 <script src="js/lib/underscore.js"></script>
 <script src="js/lib/backbone-min.js"></script>
 
 <!-- Backnone Model -->
-<script type="text/javascript" src="assets/js/backbonejs/models/Question.js"></script>
+<script type="text/javascript" src="js/backbonejs/models/Question.js"></script>
     
 <!-- Backnone views -->
 <script src="js/backbonejs/views/Home.js"></script>
