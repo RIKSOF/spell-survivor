@@ -26,6 +26,4 @@ Question = Backbone.Model.extend({
 		});
 	}
 	
-	
-	
 });
