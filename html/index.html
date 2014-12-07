@@ -3,37 +3,104 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/animate.css" rel="stylesheet">
 <title>Spell Survivor</title>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.timer.js"></script>
 <script type="text/javascript" src="js/timer.js"></script>
+<script src="js/jquery.fittext.js"></script>
+<script src="js/jquery.lettering.js"></script>
+<script src="js/jquery.textillate.js"></script>
 <script>
     $(document).ready(function() {
-        var audioElement = document.createElement('audio');
-        audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
-        audioElement.setAttribute('autoplay', 'autoplay');
+		//Audio theme start
+		var audioTheme = document.createElement('audio');
+        audioTheme.setAttribute('src', 'audio/theme.mp3');
+        audioTheme.setAttribute('autoplay', 'autoplay');
         //audioElement.load()
 
         $.get();
 
-        audioElement.addEventListener("load", function() {
+        audioTheme.addEventListener("load", function() {
             audioElement.play();
         }, true);
-		setInterval(function(){ 
-			if(counting.Timer.isActive)
-				audioElement.play(); 
-		}, 5000);
-		//console.log();
-       /* $('.speakericon').on("click",function() {
-            audioElement.play();
-        });*/
+
+		audioTheme.play(); 
+		//Audio theme end
+        setTimeout(function(){
+			$("body").animate({opacity:1},2000);
+		},3000);
+		setTimeout(function(){
+			$('.river').animate({marginTop:"80px"},15000);
+			$('.mountainsmall').animate({height:"282px"},15000);
+			$('.mountainlarge').animate({height:"445px"},15000,function(){
+				$('.sky').animate({opacity:0},12000);
+				$('.sun').animate({top:"-500px",opacity:1},12000);
+				$('.mountainlarge').animate({opacity:1},12000);
+				$('.mountainsmall').animate({opacity:1},12000);
+				setTimeout(function(){
+					$('.mountainlargeshadow').animate({height:"104px"},9000);
+					$('.mountainsmallshadow').animate({height:"142px"},9000);
+				},3000);
+			});
+		},8500);
+		
+		var getFormData = function () {
+		var data = { 
+			loop: false, 
+			in: { callback: "", effect: "bounceInDown", reverse: false, shuffle: true, sync: false }, 
+			out: { callback: "", effect: "hinge", reverse: false, shuffle: true, sync: false }
+		  };
+		  return data;
+		};
+		setTimeout(function(){
+			var $tlt = $('.logotext')
+			  .on('start.tlt', '')
+			  .on('inAnimationBegin.tlt', '')
+			  .on('inAnimationEnd.tlt', '')
+			  .on('outAnimationBegin.tlt', '')
+			  .on('outAnimationEnd.tlt', '')
+			  .on('end.tlt', '');
+			
+			var obj = getFormData();
+			$tlt.textillate(obj);
+		},35000);
+		setTimeout(function(){
+			audioTheme.pause();
+			$(".plank").animate({left:0},500,function(){
+				$(".timerMain").animate({top:0},500);
+				
+				//Quiz Voice start
+				var audioElement = document.createElement('audio');
+				audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
+				audioElement.setAttribute('autoplay', 'autoplay');
+				//audioElement.load()
+				audioElement.addEventListener("load", function() {
+            	audioElement.play();
+				}, true);
+				setInterval(function(){ 
+					if(counting.Timer.isActive)
+						audioElement.play(); 
+				}, 5000);
+				// Quiz voice end
+				
+			});
+			$(".cactus").animate({right:0},500);
+		},45000);
     });
 </script>     
 </head>
 
 <body>
+<section class="logotext">
+	<ul class="texts" style="display: none">
+        <li>Spell Survivor</li>
+        <li></li>
+    </ul>
+</section>
+<section class="sky"></section>
+<section class="sun"></section>
 <section class="upperpart">
-	<div class="sun"></div>
 	<div class="mountainlarge"><img src="images/mountain_large.png" /></div>
     <div class="mountainsmall"><img src="images/mountain_small.png" /></div>
 </section>

@@ -21,12 +21,9 @@ var counting = new (function() {
         },
         init = function() {
             $countdown = $('#countdown');
+			setTimeout(function(){
             counting.Timer = $.timer(updateTimer, incrementTime, true);
-            $form = $('#countingform');
-            $form.bind('submit', function() {
-                counting.resetCountdown();
-                return false;
-            });
+			},46000);
         };
     this.resetCountdown = function() {
         var newTime = parseInt($form.find('input[type=text]').val()) * 100;
