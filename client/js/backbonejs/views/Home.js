@@ -36,10 +36,19 @@ HomeView = Backbone.View.extend({
 		this.finishAnimation();
 	},
 	
+	//handle variable if already clicked
+	clickDisable: false,
+	
 	clickOption: function (e) {
-		e.preventDefault();
-		var selectOpt = e.currentTarget.innerHTML;
-		app.pubnubPublish(app.question.get("id"),selectOpt);
+		if ( !this.clickDisable ) {
+			e.preventDefault();
+			
+			var selectOpt = e.currentTarget.innerHTML;
+			app.pubnubPublish(app.question.get("id"),selectOpt);
+			
+			app.resetAudio();
+			this.clickDisable = true;
+		}
 	},
 	
 	titleAnimate:function(){
@@ -70,20 +79,6 @@ HomeView = Backbone.View.extend({
 		_home.$el.find(".cactus").animate({right:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
 		_home.$el.find(".timerMain").animate({top:0},500);
-				
-				//Quiz Voice start
-//				var audioElement = document.createElement('audio');
-//				audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
-//				audioElement.setAttribute('autoplay', 'autoplay');
-//				//audioElement.load()
-//				audioElement.addEventListener("load", function() {
-//            		audioElement.play();
-//				}, true);
-//				setInterval(function(){ 
-//					if(counting.Timer.isActive)
-//						audioElement.play(); 
-//				}, 5000);
-				// Quiz voice end
 				
 				// init the quiz
 				app.pubnubInit();
@@ -153,7 +148,7 @@ HomeView = Backbone.View.extend({
 		
 		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 			_home.audioTheme.pause();
-			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
+//			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
 		},48000);
 	}
 	

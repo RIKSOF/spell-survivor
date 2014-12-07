@@ -12,20 +12,7 @@ Question = Backbone.Model.extend({
 			
 			if ( _attributes.audioUrl != null ) {
 				var url = _attributes.audioUrl;
-		//		var audio = document.createElement('audio');
-		//		audio.setAttribute('src', url);
-		//		audio.setAttribute('autoplay', 'autoplay');
-		//		audio.setAttribute('loop', true);
-				var audio = new Audio(url);
-				audio.play();
-				var count = 0;
-				var _interval = setInterval(function () {
-					audio.play();
-					if ( count == 1 ) {
-						clearInterval(_interval);
-					}
-					count++;
-				},5000);
+				app.playSpelling(url);
 			}
 			
 		});
