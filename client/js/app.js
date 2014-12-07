@@ -11,6 +11,9 @@ var app = {
 	// router
 	router: null,
 	
+	// counter
+	defaultCount: 15,
+	
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
@@ -38,7 +41,7 @@ var app = {
 		this.pubnub.subscribe({
 			channel  : this.channel,
 			callback : function(message) {
-				console.log(message);
+				
 				if ( message.sender == "server" ) {
 					app.question.set(message);
 				}
