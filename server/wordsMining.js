@@ -32,7 +32,7 @@ mysqlClient.connect( function ( err ) {
       console.log("Mysql connected succesfully.");
   }
   
-  mysqlClient.query('SELECT id, word from words limit', function(err, rows, fields) {
+  mysqlClient.query('SELECT id, word from words', function(err, rows, fields) {
     if (err) throw err;
     
     // Array of tricky words
