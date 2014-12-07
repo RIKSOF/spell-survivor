@@ -1,7 +1,7 @@
 
 var RS_PUBNUB = null;
 var CURRENT_CHANNEL = null;
-var CHANNEL_NAME = 'spell-survivor';
+var CHANNEL_NAME = 'spell-survivor-level1';
 var MAX_SCORE = 100;
 var QUESTION_POST_MAX_TIME = 15000; // In milli second
 var SCORE_DEDUCT_PER_SECOND = 2;
@@ -11,8 +11,11 @@ var questionToPost = null;
 var serverFirstRun = false;
 var channels = new Array();
 var scores = new Array();
+var answerList = [];
+var serverStarted = false;
 
 var questionController = require( __dirname + '/question');
+var userController = require( __dirname + '/user');
 
 /**
  * Setup pubnub
@@ -66,13 +69,21 @@ exports.unsubscribePubnub= function(channel) {
  **/
 exports.publishPubnub= function(channel, message) {
     if ( RS_PUBNUB != null ) {
-        
+
+        answerList[ message.id ] = message.a ;
+        currentQuestionId = message.id;
+
+        delete message.a;
+
         RS_PUBNUB.publish({ 
             channel   : channel,
             message   : message,
             callback  : displayCallback,
             error     : displayCallback
         });
+
+    
+        
 
         // question is posted, now set null to questionToPost            
         questionToPost = null;
@@ -98,6 +109,10 @@ function displayCallback(callBackFor, m, e, c) {
     console.log({callBackFor:callBackFor, m:m, e:e, c:c});
 }
 
+
+/*
+W
+*/
 function messageOnChannel(m, e, c) {
 
     console.log('messageOnChannel');
@@ -110,27 +125,56 @@ function messageOnChannel(m, e, c) {
             // if user reply on current question
             if ( m.id == currentQuestionId ) {
                 
-                conosle.log( "Message/Reply from user " + JSON.stringify(m) );
+                console.log( "Message/Reply from user " + JSON.stringify(m) );
     
-                // time difference b/w question post from server, and user reply    
-                var diff = questionPostTimeStamp - new Date().getTime();
-                // calculate points
-                var points = MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND);
+                // if answer is correct
+                if ( m.sel_option == answerList[currentQuestionId] ) { 
 
-                console.log('Poinst : ' + points);
-                
+					console.log( "in pubnub line 133 - Correct answer was received");
+					
+                    // time difference b/w question post from server, and user reply    
+                    var diff = ( ( new Date().getTime() ) - questionPostTimeStamp ) /1000;
+                    // calculate points
+                    m.points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
+
+					/*
+                    console.log('diff : ' + diff);
+                    console.log('SCORE_DEDUCT_PER_SECOND : ' + SCORE_DEDUCT_PER_SECOND);
+                    console.log('Poinst : ' + points);
+                    console.log('Answer : ' + answerList[currentQuestionId]);
+					*/
+
+                    // remove answer from list
+                    delete answerList[currentQuestionId];
+					
+					//When we recived a correct answer, broadcast to all we have received a correct answer,
+					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
+					userController.saveScore( m, function( doc ){
+						console.log(  "update score card ot the user : "+ doc );
+						if ( RS_PUBNUB != null ) {
+					        RS_PUBNUB.publish({ 
+					            channel   : channel,
+					            message   : doc,
+					            callback  : displayCallback,
+					            error     : displayCallback
+					        });
+					    }
+					});
+                }
             }
 
         } else {
-            
+           
             // set question posting timestamp
             questionPostTimeStamp = new Date().getTime();
             // set current question id
-            currentQuestionId = m.id;
+            
 
             console.log( "Message from server " + JSON.stringify(m) );
             console.log( "At timestamp" + questionPostTimeStamp );
-            console.log ("At time " + (new Date(questionPostTimeStamp)) );
+            console.log ("At time: " + (new Date(questionPostTimeStamp)) );
+            //console.log("currentQuestionId: " + currentQuestionId);
+            //console.log('answerList : ' + answerList[currentQuestionId]);
             
         }
     }

@@ -28,10 +28,9 @@ var connectAssets = require('connect-assets');
 
 var pubnubController = require('./controllers/pubnub');
 var cronJobsController = require('./controllers/cronJobs');
+var questionController = require('./controllers/question');
+var userController = require('./controllers/user');
 
-//var userController = require('./controllers/user');
-//userController.createUser('1234','spell-survivor');
-//userController.postAnswer('1234','spell-survivor',{"questionId":"2", "sel_option":"1", "points": "90"});
 
 /**
  * API keys and Passport configuration.
@@ -46,7 +45,6 @@ var passportConf = require('./config/passport');
 
 var app = express();
 
-
 /**
  * Connect to Mysql
  */
@@ -58,7 +56,10 @@ mysqlClient.connect(function(err){
   console.log('Mysqlconnection error: '+err);
   else
   console.log("Mysql connected succesfully.");
+  secrets.mysqlConnection = mysqlClient;
+  //questionController.getQuestion(4, null);  
 });
+
 
 /**
  * Connect to MongoDB.
@@ -124,10 +125,13 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+
+app.get('/getCurrentScore', userController.getCurrentScore);
+
 /**
  * Cron job routes.
  */
-app.get('/c1SetLevel', cronJobsController.c1SetLevel);
+//app.get('/c1SetLevel', apiController.c1SetLevel);
 
 
 /**

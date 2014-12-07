@@ -1,11 +1,10 @@
 HomeView = Backbone.View.extend({
+	
 	audioTheme : document.createElement('audio'),
 	timeOut: new Array(),
 	timeCount:0,
 	AnimateObj: new Array(),
 	AnimateCounter:0,
-	
-	count: 0,
 	
 	initialize: function( options ){
 		this.render();
@@ -16,7 +15,6 @@ HomeView = Backbone.View.extend({
 		this.$el.html(template);
 		
 		this.initAnimation();
-		this.count = app.defaultCount;
 	},
 	
 	events: {
@@ -90,7 +88,6 @@ HomeView = Backbone.View.extend({
 				
 				// init the quiz
 				app.pubnubInit();
-				_home.initCount();
 				
 			});
 	},
@@ -161,23 +158,6 @@ HomeView = Backbone.View.extend({
 			_home.audioTheme.pause();
 			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
 		},48000);
-	},
-	
-	initCount: function () {
-		var _home = this;
-		
-		_home.$el.find("#countdown").val(_home.count);
-		
-		setInterval(function () {
-			_home.$el.find("#countdown").html(_home.count--);
-			_home.$el.find(".timerMain").animate({ top: "-10px" }, 200, function() {
-			  $(this).animate({ top: "0px" }, 100 );
-			});
-			if (_home.count <= 0) {
-				_home.count = app.defaultCount;
-			}
-		},1000);
-		
 	},
 	
 	animatePlank: function(){
