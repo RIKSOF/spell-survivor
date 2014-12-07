@@ -46,8 +46,8 @@ exports.getQuestion = function(difficultyLevel, callBack) {
                 options.push(rows[i].word);
                
             }
-                                                //options[getRendom(0,3)]
-            ques1   =    { "id":getUniqueId(), "a":options[0], "options":options, sender:"server"};
+                                                
+            ques1   =    { "id":getUniqueId(), "a":options[getRendom(0,3)], "options":options, sender:"server"};
             exports.getAudioUrl(ques1, callBack);
 
             //console.log(ques1);
