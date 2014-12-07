@@ -22,7 +22,7 @@ var app = {
 		Backbone.history.start();
 		this.question = new Question();
 		
-		this.pubnubInit();
+	//	this.pubnubInit();
 	
 	},
 	
