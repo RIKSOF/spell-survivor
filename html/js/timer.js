@@ -21,29 +21,17 @@ var counting = new (function() {
         },
         init = function() {
             $countdown = $('#countdown');
-			setTimeout(function(){
+			//setTimeout(function(){
             counting.Timer = $.timer(updateTimer, incrementTime, true);
-			},49000);
+			//},49000);
         };
-    this.resetCountdown = function() {
-        var newTime = parseInt($form.find('input[type=text]').val()) * 100;
-        if (newTime > 0) {currentTime = newTime;}
-        this.Timer.stop().once();
-    };
+		this.resetCountdown = function() {
+			var newTime = parseInt($form.find('input[type=text]').val()) * 100;
+			if (newTime > 0) {currentTime = newTime;}
+			this.Timer.stop().once();
+		};
     $(init);
 });
-
-/**
- * Example 4 is as simple as it gets.  Just a timer object and
- * a counter that is displayed as it updates.
- */
-var count = 0,
-    timer = $.timer(function() {
-        count++;
-        $('#counter').html(count);
-    });
-timer.set({ time : 1000, autostart : true });
-
 
 // Common functions
 function pad(number, length) {

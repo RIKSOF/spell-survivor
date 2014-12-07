@@ -25,7 +25,7 @@
             audioElement.play();
         }, true);
 
-		audioTheme.play(); 
+		audioTheme.pause(); 
 		//Audio theme end
         setTimeout(function(){
 			$("body").animate({opacity:1},2000);
@@ -68,7 +68,7 @@
 		setTimeout(function(){
 			audioTheme.pause();
 			$(".plank").animate({left:0},500,function(){
-				$(".timerMain").animate({top:0},500);
+				//$(".timerMain").animate({top:0},500);
 				
 				//Quiz Voice start
 				var audioElement = document.createElement('audio');

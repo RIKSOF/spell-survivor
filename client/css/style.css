@@ -53,7 +53,9 @@ body{ background:#b3cacf; opacity:0;}
 .userinfo .userimg img{ width:100%;}
 .userinfo .username{ text-align:center; padding:0 5px;}
 .userinfo .username a{ font-family:ErasITC-Demi; color:#9b8652; font-size:18px; line-height:18px;}
-.backbutton{ position:absolute; bottom:25px; left:25px; z-index:5; display:none;}
+.backbutton{ position:absolute; bottom:25px; left:25px; z-index:5; display:none; cursor:pointer;}
+.skipbutton{ background:url(../images/skip.png) bottom center no-repeat; background-size:contain; width:159px; height:77px; position:absolute; bottom:25px; right:25px; z-index:5; cursor:pointer;}
+.skipbutton a{font-family:DriftWood; font-size:38px; color:#271201; text-align:center; line-height:70px; text-align:center; width:159px; height:77px; display:block;}
 .timerMain{ width:65px; height:65px; margin:auto; left:31px; position:relative; top:-100px;}
 .timer{ background:#fff; width:60px; height:60px; border:2px solid #50b301; border-radius:68px; color:#50b301; font-family:ErasITC-Bold; font-size:36px; text-align:center; line-height:60px;}
 .speakericon{ position:absolute; bottom:100px; right:80px; width:50px; height:50px;}
