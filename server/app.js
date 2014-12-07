@@ -25,9 +25,13 @@ var connectAssets = require('connect-assets');
 /**
  * Controllers (route handlers).
  */
+
 var pubnubController = require('./controllers/pubnub');
 var cronJobsController = require('./controllers/cronJobs');
 
+//var userController = require('./controllers/user');
+//userController.createUser('1234','spell-survivor');
+//userController.postAnswer('1234','spell-survivor',{"questionId":"2", "sel_option":"1", "points": "90"});
 
 /**
  * API keys and Passport configuration.
