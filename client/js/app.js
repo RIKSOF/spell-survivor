@@ -21,12 +21,15 @@ var app = {
 	publishKey: 'demo',
 	subscribeKey: 'demo',
 	channel: "spell-survivor-level1",
+	
 	question: null,
+	scoreCard: null,
 	
 	init: function () {
 		app.router = new AppRouter();
 		Backbone.history.start();
 		this.question = new Question();
+		this.scoreCard = new Scorecard();
 		
 	//	this.pubnubInit();
 	
@@ -47,6 +50,9 @@ var app = {
 				console.log(message);
 				if ( message.sender == "server" ) {
 					
+					//
+					app.home.animatePlank();
+					
 					// set current answer
 					currentMessage = message;
 					
@@ -65,7 +71,9 @@ var app = {
 				}
 				
 				if ( message.sender == "updateScoreCard" ) {
-					
+					if ( app.getSession() == message.hashUid ) {
+						app.scoreCard.set(message);
+					}
 				}
 				
 			}
@@ -140,20 +148,29 @@ var app = {
 		},5000);
 	},
 	
+	// currentCount Interval to end interval in case of user answers the question
+	_countInterval: null,
+	
 	initCount: function () {
-		count = app.defaultCount;
 		
-		app.home.$el.find("#countdown").val(count);
-		var _interval = setInterval(function () {
-			app.home.$el.find("#countdown").html(count--);
+		count = app.defaultCount;
+		_app = this;
+		_app.home.$el.find("#countdown").val(count);
+		_app._countInterval = setInterval(function () {
+			_app.home.$el.find("#countdown").html(count--);
 			if (count <= 0) {
-				clearInterval(_interval);
+				clearInterval(_app._countInterval);
 			}
 		},1000);
 	},
 	
 	resetCount: function() {
 		app.home.$el.find("#countdown").val(0);
+		if ( app._countInterval != null ) {
+			clearInterval(app._countInterval);
+			app._countInterval = null;
+		}
+		
 	},
 	
 	resetAudio: function() {

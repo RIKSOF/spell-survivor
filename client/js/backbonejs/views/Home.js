@@ -6,6 +6,10 @@ HomeView = Backbone.View.extend({
 	AnimateObj: new Array(),
 	AnimateCounter:0,
 	
+	//handle variable if already clicked
+	// by default it should be disabled, not let user to click on ... slots
+	clickDisable: true,
+	
 	initialize: function( options ){
 		this.render();
 	},
@@ -35,9 +39,6 @@ HomeView = Backbone.View.extend({
 		
 		this.finishAnimation();
 	},
-	
-	//handle variable if already clicked
-	clickDisable: false,
 	
 	clickOption: function (e) {
 		if ( !this.clickDisable ) {
@@ -81,11 +82,9 @@ HomeView = Backbone.View.extend({
 		_home.$el.find(".cactus").animate({right:0},500);
 		_home.$el.find('.scoreboard').animate({left:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
-		_home.$el.find(".timerMain").animate({top:0},500);
-				
+			_home.$el.find(".timerMain").animate({top:0},500);
 				// init the quiz
 				app.pubnubInit();
-				
 			});
 	},
 	
