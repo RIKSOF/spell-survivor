@@ -108,6 +108,10 @@ function displayCallback(callBackFor, m, e, c) {
     console.log({callBackFor:callBackFor, m:m, e:e, c:c});
 }
 
+
+/*
+W
+*/
 function messageOnChannel(m, e, c) {
 
     console.log('messageOnChannel');
@@ -127,18 +131,21 @@ function messageOnChannel(m, e, c) {
 
                     // time difference b/w question post from server, and user reply    
                     var diff = ( ( new Date().getTime() ) - questionPostTimeStamp ) /1000;
+                    // calculate points
+                    m.points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
+
+					/*
                     console.log('diff : ' + diff);
                     console.log('SCORE_DEDUCT_PER_SECOND : ' + SCORE_DEDUCT_PER_SECOND);
-                    // calculate points
-                    var points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
-
                     console.log('Poinst : ' + points);
                     console.log('Answer : ' + answerList[currentQuestionId]);
+					*/
+
                     // remove answer from list
                     delete answerList[currentQuestionId];
-                    console.log('After delete');
+					
+					user.saveScore( m  );
                 }
-                
             }
 
         } else {

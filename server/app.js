@@ -47,7 +47,6 @@ var passportConf = require('./config/passport');
 
 var app = express();
 
-
 /**
  * Connect to Mysql
  */

@@ -44,47 +44,29 @@ exports.createUser = function(hashId, channel) {
 
 /**
  *
- * Post answer
+ * Save answer in database
  **/
-exports.postAnswer = function(hashId, channel,answer) {
+exports.saveScore = function( m ) {
 
-
-        User.find({
-            hashId: hashId
-        }, function(err, u) {
-
-            if (err) {
-                console.log(JSON.stringify(err));
-            }
-
-            // users found
-            if (u.length > 0) {
-
-                // update details
-                Score.update({
-                            "userId":hashId,
-                            "channel": channel
-                        }, { $push: {answers: answer } }, 
-                        {
-                            safe: true, upsert: true
-                        },
-                        function(err, model) {
-
-                            if (err) {
-                                console.log(JSON.stringify(err));
-                            }
-
-                            console.log('answer added successfully.');
-                        });
-               
-
-            } else {
-
-                console.log('no user found for this username: ' + hashId);
-
-            }
-        });
-
+	var query = {};
+	if( m.userId != "anonymous" ){
+		query	= { hashId: m.hashId };
+	}else{
+		query	= { userId: m.userId };
+	}
+	
+	Score.findOne(query, function (err, doc){
+        if (err) {
+            console.log(JSON.stringify(err));
+			return;
+        }else{
+		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+		  doc.level		= secrets.levels[m.channel];
+		  doc.rank		= 1;
+		  doc.lastUpdated = ""+ new Date();
+	  	  doc.save();
+        }
+	});
 };
 
 /**
@@ -98,16 +80,24 @@ exports.getCurrentScore = function(hashId, channel,callback) {
             channel:channel
         }, function(err, score) {
 
-            if (err) {
-                console.log(JSON.stringify(err));
-                return;
-            }
-
-            var points = 0;
-
-            if( score.answer.length > 0 ) {
-                points += Number(answer.points);
-            }
+          if (err) {
+              console.log(JSON.stringify(err));
+              return;
+          }
+		  else {
+	  		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+	  		  doc.level		= secrets.levels[m.channel];
+	  		  doc.rank		= 1;
+	  		  doc.lastUpdated = ""+ new Date();
+	  	  	  doc.save();
+	  		  /*
+	  		  doc.maxScore  = secrets.levels[m.channel].maxScore;		  
+	  		  doc.isLevelUpdated = false;		  
+	  		  if( secrets.levels[m.channel].maxScore > doc.points  ) {
+	  			  doc.isLevelUpdated = true;
+	  		  }
+	  		  */
+	  	  }
                
      });
 

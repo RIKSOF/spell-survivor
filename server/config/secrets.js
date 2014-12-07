@@ -30,6 +30,7 @@ module.exports = {
 	
   db: process.env.MONGOLAB_URI || process.env.MONGODB || 'mongodb://admin:admin@ds061200.mongolab.com:61200/spell-survivor',
   //mysql: 'mysql://'   + config.mysql.user + ':' + config.mysql.password + '@' + config.mysql.host + ':' + config.mysql.port + '/' + config.mysql.db,
+ 
 
   sessionSecret: process.env.SESSION_SECRET || 'TeamRiksofSessionSecret',
 
@@ -134,5 +135,9 @@ module.exports = {
     clientId: process.env.VENMO_ID || '1688',
     clientSecret: process.env.VENMO_SECRET || 'uQXtNBa6KVphDLAEx8suEush3scX8grs',
     redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
+  },
+  levels:{
+    "spell-survivor-level1" : 1, maxScore:1000,
+  	"spell-survivor-level2" : 2	 , maxScore:2000, 
   }
 };
