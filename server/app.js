@@ -28,6 +28,7 @@ var connectAssets = require('connect-assets');
 
 var pubnubController = require('./controllers/pubnub');
 var cronJobsController = require('./controllers/cronJobs');
+var questionController = require('./controllers/question');
 
 //var userController = require('./controllers/user');
 //userController.createUser('1234','spell-survivor');
@@ -58,7 +59,10 @@ mysqlClient.connect(function(err){
   console.log('Mysqlconnection error: '+err);
   else
   console.log("Mysql connected succesfully.");
+  secrets.mysqlConnection = mysqlClient;
+  //questionController.getQuestion(4, null);  
 });
+
 
 /**
  * Connect to MongoDB.

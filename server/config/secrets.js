@@ -19,10 +19,11 @@ var config = {};
 config.mysql = {};
 config.mysql.user		= "root";
 config.mysql.password	= "root";
-config.mysql.host		= "192.168.2.103";
+config.mysql.host		= "localhost";
 //config.mysql.port		= "3306";
-config.mysql.db			= "wordsdb";
+config.mysql.database			= "wordsdb";
 
+var mysqlConnection = false;
 
 module.exports = {
   config: config,
