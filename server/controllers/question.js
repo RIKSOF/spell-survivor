@@ -1,16 +1,17 @@
 var request = require('request');
-
+var secrets = require('../config/secrets');
 /**
 * Conver text into audio.
 * @word: String < Apple >
 * @callBack: function //Example result: { err: null,  body: 'http://media.tts-api.com/d0be2dc421be4fcd0172e5afceea3970e2f3d940.mp3' }
 */
-exports.getAudioUrl = function(word, callBack) {
-	var reqUrl = 'http://tts-api.com/tts.mp3?return_url=1&q='+word ;	
-	//console.log("In getAudioUrl reqUrl = "+reqUrl);
+exports.getAudioUrl = function(question, callBack) {
+
+	var reqUrl = 'http://tts-api.com/tts.mp3?return_url=1&q=' + question.a ;	
 	
     request.get(reqUrl, function(err, request, body) {
-		callBack( {err:err, body:body} );
+        question['audioUrl'] = body;
+		callBack( question );
     });
 };
 
@@ -26,21 +27,53 @@ exports.getAudioUrl("Apple",function( resultObj ){
 * @callBack: function //Example result: { err: null,  body: 'http://media.tts-api.com/d0be2dc421be4fcd0172e5afceea3970e2f3d940.mp3' }
 */
 exports.getQuestion = function(difficultyLevel, callBack) {
-    console.log('getQuestion');
+
+    if ( secrets.mysqlConnection ) {
+        var r1= parseInt( Math.random()*( Math.random()*99999) );
+        
+        var queryString = "Select * from words Limit "+r1+", 4"
+        //console.log(queryString);
+
+        secrets.mysqlConnection.query(queryString, function(err, rows, fields) {
+            if (err) { 
+                console.log(err);
+            }
+ 
+            var ques1 = [];
+            var options = [];
+
+            for (var i in rows) {
+                options.push(rows[i].word);
+               
+            }
+
+            ques1   =    { "id":getUniqueId(), "a":options[getRendom(0,3)], "options":options, sender:"server"};
+            exports.getAudioUrl(ques1, callBack);
+
+            //console.log(ques1);
+        });
+    } else {
+        console.log('No MYSQL CONNECTION');
+    }
+
+    
     // query to sql, to get word,
     // get audio for this word
     
     // response to request
-    question = questionAry[Math.floor(Math.random() * 4)];
-    question['audioUrl'] = "http://media.tts-api.com/d0be2dc421be4fcd0172e5afceea3970e2f3d940.mp3";
+    //question = questionAry[Math.floor(Math.random() * 4)];
+    //question['audioUrl'] = "http://media.tts-api.com/d0be2dc421be4fcd0172e5afceea3970e2f3d940.mp3";
     
     // execute callback
-	callBack({question:question});
+	//callBack({question:question});
 };
 
 
+function getRendom(str,end){
+    return Math.floor(Math.random() * 4);
+}
 function getUniqueId(){
-    return ( new Date().getTime() + Math.random(0,100) );
+    return ( "u"+new Date().getTime() + Math.random(0,100) ).substr(0,10);
 }
 
 var questionAry = [
