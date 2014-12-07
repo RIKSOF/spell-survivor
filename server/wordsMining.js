@@ -101,32 +101,35 @@ mysqlClient.connect( function ( err ) {
                 level++;
             }
         }
+         //Make a query with sounrd like for the word, if the count of such rows is more than 4, level++, if it is more than 6, level+2 and if it is more than 8, level +3
         
-        //Make a query with sounrd like for the word, if the count of such rows is more than 4, level++, if it is more than 6, level+2 and if it is more than 8, level +3
+        // This ensures values for each callback are maintained correctly.
+        (function( lvl, wrd, wrdId ){
         
-        mysqlClient.query('SELECT word from words WHERE word SOUNDS LIKE "' + word + '" LIMIT 3', function(err2, rowOfSimilarWords, fields2) {
-            if (err) throw err;
+            mysqlClient.query('SELECT word from words WHERE word SOUNDS LIKE "' + wrd + '" LIMIT 3', function(err2, rowOfSimilarWords, fields2) {
+                if (err) throw err;
             
-            var options = [];
-            for ( var j = 0; j < rowOfSimilarWords.length; j++ ) {
-                options[j] = rowOfSimilarWords[j].word;
-            }
-            
-            
-            // Confusing words
-            for ( var key in confusingSpellings ) {
-                if ( word.indexOf( key ) >= 0 ) {
-                    options[2] = word.replace( key, confusingSpellings[key] );
-                    break;
+                var options = [];
+                for ( var j = 0; j < rowOfSimilarWords.length; j++ ) {
+                    options[j] = rowOfSimilarWords[j].word;
                 }
-            }
             
-            // Update the level and option words
-            mysqlClient.query('UPDATE words SET level=' + level + ', option_1="' + options[0] + '", option_2="' + options[1] + '", option_3="' + options[2] + '" where id = ' + wordId +';', function(){
-                console.log('updated');
+            
+                // Confusing words
+                for ( var key in confusingSpellings ) {
+                    if ( wrd.indexOf( key ) >= 0 ) {
+                        options[2] = wrd.replace( key, confusingSpellings[key] );
+                        break;
+                    }
+                }
+            
+                // Update the level and option words
+                mysqlClient.query('UPDATE words SET level=' + lvl + ', option_1="' + options[0] + '", option_2="' + options[1] + '", option_3="' + options[2] + '" where id = ' + wrdId +';', function(){
+                    console.log('updated');
+                });
             });
         
-        });
+        })(level, word, wordId);
     }
     
   });
