@@ -4,9 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/animate.css" rel="stylesheet">
-    
-    <title>Spell Survivor</title>
-
+    <title>Spell To Survive</title>
 </head>
 
 <body>
@@ -36,26 +34,40 @@
 		</div>
 		<div class="plank">
 			<ul class="options">
-				<li><a href="#" id="options1">...</a></li>
-				<li><a href="#" id="options2">...</a></li>
-				<li><a href="#" id="options3">...</a></li>
-				<li><a href="#" id="options4">...</a></li>
+				<li><a href="#" class="clickSound" id="options1">...</a></li>
+				<li><a href="#" class="clickSound" id="options2">...</a></li>
+				<li><a href="#" class="clickSound" id="options3">...</a></li>
+				<li><a href="#" class="clickSound" id="options4">...</a></li>
 			</ul>
-			<div class="speakericon"><a href="#"><img src="images/speaker.png"></a></div>
+		</div>
+		<div class="plankhowto">
+			<ul class="howtoul">
+				<li>- Answer the correct word as fast as you can !</li>
+				<li>- Fastest Answer will get the points</li>
+				<li>- Sound plays on fastest answer <a id="fastestsample"><img src="images/speaker.png"></a></li>
+				<li>- Sound plays on correct but not fastest answer <a id="correctsample"><img src="images/speaker.png"></a></li>
+				<li>- Sound plays on incorrect answer <a id="incorrectsample"><img src="images/speaker.png"></a></li>
+			</ul>
+			<div class="credits">Developed by: <img src="images/riksof-small.png" /></div>
 		</div>
 	</section>
 	<section class="scoreboard" id="scoreboard">00</section>
 	<section class="userinfo">
-		<div class="userimg"><a href="#"><img src="images/img.jpg" /></a></div>
-		<div class="username"><a href="#">Sharjeelkhan</a></div>
+		<div class="userimg"><a class="clickSound" href="#"><img src="images/img.jpg" /></a></div>
+		<div class="username"><a class="clickSound" href="#">Sharjeelkhan</a></div>
 	</section>
 	<section class="backbutton">
-		<a><img src="images/backbutton.png" /></a>
+		<a class="clickSound"><img src="images/backbutton.png" /></a>
 	</section>
 	<section class="skipbutton">
-		<a>Skip</a>
+		<a class="clickSound">Skip</a>
 	</section>
-	<section class="cactus">
+	<section class="cactus"></section>
+	<section class="mainmenu">
+		<ul>
+			<li class="clickSound" id="startgame">Start</li>
+			<li class="clickSound" id="howtoplay">How to play</li>
+		</ul>
 	</section>
 </script>
 

@@ -1,6 +1,10 @@
 HomeView = Backbone.View.extend({
 	
+	audioClick : document.createElement('audio'),
 	audioTheme : document.createElement('audio'),
+	audioFastest : document.createElement('audio'),
+	audioCorrect : document.createElement('audio'),
+	audioIncorrect : document.createElement('audio'),
 	timeOut: new Array(),
 	timeCount:0,
 	AnimateObj: new Array(),
@@ -18,16 +22,24 @@ HomeView = Backbone.View.extend({
 		var template = _.template($('#homeTemplate').html(), {});
 		this.$el.html(template);
 		
+		this.audioClick.setAttribute('src', 'audio/bullet.mp3');
 		this.initAnimation();
 	},
 	
 	events: {
 		"click .options li a":"clickOption",
-		"click .skipbutton":"skipAnimation"
+		"click .skipbutton":"skipAnimation",
+		"click #howtoplay":"howtoPlay",
+		"click .clickSound":"clickSound",
+		"click #correctsample":"correctSound",
+		"click #incorrectsample":"incorrectSound",
+		"click #fastestsample":"fastestSound",
+		"click .backbutton":"backtoMenu",
+		"click #startgame":"startGame",
 	},
 	
 	skipAnimation : function() {
-		this.audioTheme.pause();
+		//this.audioTheme.pause();
 		$(".skipbutton").hide();
 		$.each( this.timeOut, function( key, value ) {
  			clearTimeout(value);
@@ -90,7 +102,7 @@ HomeView = Backbone.View.extend({
 	
 	finishAnimation: function(){
 		var _home = this;
-		$("body").css({opacity:1});
+		$("body").css({opacity:1,background:"#b3cacf"});
 		_home.$el.find('.river').css({marginTop:"80px"});
 		_home.$el.find('.mountainsmall').css({height:"282px"});
 		_home.$el.find('.mountainlarge').css({height:"445px"});
@@ -99,16 +111,19 @@ HomeView = Backbone.View.extend({
 		_home.$el.find('.mountainlarge').css({opacity:1});
 		_home.$el.find('.mountainsmall').css({opacity:1});
 		_home.$el.find('.mountainlargeshadow').css({height:"104px"});
-		_home.$el.find('.mountainsmallshadow').css({height:"142px"});
+		_home.$el.find('.mountainsmallshadow').css({height:"161px"});
 		_home.titleAnimate();
 		setTimeout(function(){
-			_home.loadPlank();
-		},8000);
+			_home.Mainmenu();
+		},7000);
 	},
 	
 	initAnimation: function () {
 		//Audio theme start
 		
+		this.audioFastest.setAttribute('src', 'audio/sound.mp3');
+		this.audioCorrect.setAttribute('src', 'audio/click.mp3');
+		this.audioIncorrect.setAttribute('src', 'audio/cow.mp3');
         this.audioTheme.setAttribute('src', 'audio/theme.mp3');
         this.audioTheme.setAttribute('autoplay', 'autoplay');
         //audioElement.load()
@@ -126,7 +141,7 @@ HomeView = Backbone.View.extend({
         
 		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 			_home.AnimateObj[_home.AnimateCounter++] = $("body").animate({opacity:1},2000,function(){
-				
+				$("body").css("background","#b3cacf");
 				_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 					_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.river').animate({marginTop:"80px"},15000);
 					_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmall').animate({height:"282px"},15000);
@@ -137,8 +152,10 @@ HomeView = Backbone.View.extend({
 						_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmall').animate({opacity:1},12000);
 						_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainlargeshadow').animate({height:"104px"},9000);
-							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmallshadow').animate({height:"142px"},9000);
-							$(".skipbutton").hide();
+							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmallshadow').animate({height:"161px"},9000,function(){
+								$(".skipbutton").hide();	
+							});
+							
 						},3000);
 					});
 				},3500);		
@@ -151,9 +168,10 @@ HomeView = Backbone.View.extend({
 		
 		
 		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
-			_home.audioTheme.pause();
+			 //_home.audioTheme.pause();
+			_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mainmenu').animate({bottom:"30%"},500);
 //			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
-		},48000);
+		},43000);
 	},
 	
 	animatePlank: function(){
@@ -162,6 +180,49 @@ HomeView = Backbone.View.extend({
 		this.$el.find("#options2").parent().animate({right:'-350%'},500);
 		this.$el.find("#options3").parent().animate({left:'-350%'},500);
 		this.$el.find("#options4").parent().animate({right:'-350%'},500);
+	},
+	
+	Mainmenu: function(){
+		this.$el.find('.mainmenu').animate({bottom:"30%"},500);
+	},
+	
+	howtoPlay: function(){
+		var _home = this;
+		this.$el.find('.mainmenu').animate({bottom:"-220%"},500,function(){
+			_home.$el.find(".plankhowto").animate({left:0},500,function(){
+				_home.$el.find(".backbutton").show();
+			});	
+		});
+		
+	},
+	
+	backtoMenu:function(){
+		var _home = this;
+		this.$el.find(".backbutton").hide();
+		this.$el.find(".plankhowto").animate({left:'-150%'},500,function(){
+			_home.$el.find('.mainmenu').animate({bottom:"30%"},500);
+		});
+	},
+	
+	startGame:function(){
+		this.audioTheme.pause();
+		this.$el.find('.mainmenu').animate({bottom:"-220%"},500);
+	},
+	
+	correctSound: function(){
+		this.audioCorrect.play();
+	},
+	
+	incorrectSound: function(){
+		this.audioIncorrect.play();
+	},
+	
+	fastestSound: function(){
+		this.audioFastest.play();
+	},
+	
+	clickSound: function(){
+		this.audioClick.play();
 	}
 	
 });
