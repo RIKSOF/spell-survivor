@@ -122,6 +122,7 @@ function messageOnChannel(m, e, c) {
         
         if ( m.sender == "user" ) {  
             
+
             // if user reply on current question
             if ( m.id == currentQuestionId ) {
                 
@@ -147,23 +148,33 @@ function messageOnChannel(m, e, c) {
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
+                   // m.channel   =   channel;
+
 					//When we recived a correct answer, broadcast to all we have received a correct answer,
-					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
-					userController.saveScore( m, function( doc ){
-						console.log(  "update score card ot the user : "+ doc );
+					//Update the score card of the user where the {hashUid: m.hashUid, userId: m.userId} are matched
+					userController.saveScore( m, function( src ){
+						
 						if ( RS_PUBNUB != null ) {
+                           
+                            console.log(  "update score card of the user : ", src );
 					        RS_PUBNUB.publish({ 
-					            channel   : channel,
-					            message   : doc,
+					            channel   : src.channel,
+					            message   : src,
 					            callback  : displayCallback,
 					            error     : displayCallback
 					        });
-					    }
+					    } else {
+                            console.log('RS_PUBNUB is null at 167');
+                        }
 					});
                 }
             }
 
-        } else {
+        } 
+        else if ( m.sender == "updateScoreCard" ) {  
+            console.log( "updateScoreCard " + JSON.stringify(m) );
+        }        
+        else if ( m.sender == "server" ) {  
            
             // set question posting timestamp
             questionPostTimeStamp = new Date().getTime();
