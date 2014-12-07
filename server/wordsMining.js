@@ -32,7 +32,7 @@ mysqlClient.connect( function ( err ) {
       console.log("Mysql connected succesfully.");
   }
   
-  mysqlClient.query('SELECT id, word from words', function(err, rows, fields) {
+  mysqlClient.query('SELECT id, word from words LIMIT 10', function(err, rows, fields) {
     if (err) throw err;
     
     // Array of tricky words
@@ -49,11 +49,42 @@ mysqlClient.connect( function ( err ) {
         'wright', 'right'
     ];
     
+    // Confusing spellings
+    var confusingSpellings = {
+        'able': 'ible',
+        'ible': 'able',
+        'aly': 'ly',
+        'ly': 'aly',
+        'cc': 'c',
+        'ss': 's',
+        'ie': 'ei',
+        'ei': 'ie',
+        'mm': 'm',
+        'nn': 'n',
+        'ery': 'ary',
+        'ary': 'ery',
+        'sc': 'ti',
+        'ti': 'sc',
+        'cede': 'ceed',
+        'ceed': 'cede',
+        'er': 're',
+        'ign': 'ing',
+        'ate': 'eat',
+        'eat': 'ate',
+        'ous': 'os',
+        'os': 'ous',
+        'euver': 'oeuvre',
+        'oeuvre': 'euver',
+        'wright': 'right',
+        'right': 'wright' 
+    }
+    
     tLen = trickyWords.length;
 
     for( var i = 0, len = rows.length; i < len; i++  ) {
         var level = 1;
         var word = rows[i].word;
+        var wordId = rows[i].id;
         
         // Length factor on level.
         if ( word.length > 7 ) {
@@ -73,12 +104,30 @@ mysqlClient.connect( function ( err ) {
         
         //Make a query with sounrd like for the word, if the count of such rows is more than 4, level++, if it is more than 6, level+2 and if it is more than 8, level +3
         
-        // Update the level
-        mysqlClient.query('UPDATE words SET level = ' + level + ' where id = ' + rows[i].id +';');
-
-        console.log('The solution is: ', rows[i].id + ': ' + rows[i].word + ' (' + level + ')');
+        mysqlClient.query('SELECT word from words WHERE word SOUNDS LIKE "' + word + '" LIMIT 3', function(err2, rowOfSimilarWords, fields2) {
+            if (err) throw err;
+            
+            var options = [];
+            for ( var j = 0; j < rowOfSimilarWords.length; j++ ) {
+                options[j] = rowOfSimilarWords[j].word;
+            }
+            
+            
+            // Confusing words
+            for ( var key in confusingSpellings ) {
+                if ( word.indexOf( key ) >= 0 ) {
+                    options[2] = word.replace( key, confusingSpellings[key] );
+                    break;
+                }
+            }
+            
+            // Update the level and option words
+            mysqlClient.query('UPDATE words SET level=' + level + ', option_1="' + options[0] + '", option_2="' + options[1] + '", option_3="' + options[2] + '" where id = ' + wordId +';', function(){
+                console.log('updated');
+            });
+        
+        });
     }
     
-    mysqlClient.end();
   });
 });
