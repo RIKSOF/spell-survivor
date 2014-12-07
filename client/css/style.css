@@ -47,7 +47,7 @@ body{ background:#b3cacf; opacity:0; overflow:hidden;}
 .options{ width:477px; margin:0px auto; padding-top:90px;}
 .options li{ margin-bottom:20px; position:relative;}
 .options li a{ background:url(../images/wordbg.png) bottom center no-repeat; background-size:contain; width:477px; height:80px; display:block; font-family:DriftWood; font-size:38px; color:#271201; text-align:center; line-height:70px;}
-.scoreboard{ background:url(../images/scorebg.png) bottom center no-repeat; background-size:contain; position:absolute; left:25px; top:25px; z-index:5; width:253px; height:80px; font-family:ErasITC-Bold; color:#fff; font-size:40px; line-height:80px; text-align:center; display:none;}
+.scoreboard{ background:url(../images/scorebg.png) bottom center no-repeat; background-size:contain; position:absolute; left:25px; top:25px; z-index:5; width:253px; height:80px; font-family:ErasITC-Bold; color:#fff; font-size:40px; line-height:80px; text-align:center; left:-150%;}
 .userinfo{background:url(../images/userbg.png) bottom center no-repeat; background-size:contain; position:absolute; left:50px; top:35%; z-index:5; width:152px; height:205px; text-align:center; display:none;}
 .userinfo .userimg{ width:100px; margin:35px auto 20px auto;}
 .userinfo .userimg img{ width:100%;}
