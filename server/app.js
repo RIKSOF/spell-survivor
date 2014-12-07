@@ -17,6 +17,7 @@ var MongoStore = require('connect-mongo')(session);
 var flash = require('express-flash');
 var path = require('path');
 var mongoose = require('mongoose');
+var mysql = require('mysql');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
@@ -25,6 +26,7 @@ var connectAssets = require('connect-assets');
  * Controllers (route handlers).
  */
 var pubnubController = require('./controllers/pubnub');
+var cronJobsController = require('./controllers/cronJobs');
 
 
 /**
@@ -40,6 +42,20 @@ var passportConf = require('./config/passport');
 
 var app = express();
 
+
+/**
+ * Connect to Mysql
+ */
+
+
+var mysqlClient = mysql.createConnection(secrets.config.mysql);
+mysqlClient.connect(function(err){
+  if (err) 
+  console.log('Mysqlconnection error: '+err);
+  else
+  console.log("Mysql connected succesfully.");
+});
+
 /**
  * Connect to MongoDB.
  */
@@ -48,6 +64,8 @@ mongoose.connect(secrets.db);
 mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Please make sure that MongoDB is running.');
 });
+
+
 
 /**
  * CSRF whitelist.
@@ -101,6 +119,12 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
+/**
+ * Cron job routes.
+ */
+app.get('/c1SetLevel', cronJobsController.c1SetLevel);
+
 
 /**
  * 500 Error Handler.
