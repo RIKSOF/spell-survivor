@@ -15,6 +15,7 @@ var answerList = [];
 var serverStarted = false;
 
 var questionController = require( __dirname + '/question');
+var userController = require( __dirname + '/user');
 
 /**
  * Setup pubnub
@@ -144,7 +145,7 @@ function messageOnChannel(m, e, c) {
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
-					user.saveScore( m  );
+					userController.saveScore( m  );
                 }
             }
 

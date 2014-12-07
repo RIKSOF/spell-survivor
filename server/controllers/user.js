@@ -60,7 +60,7 @@ exports.saveScore = function( m ) {
             console.log(JSON.stringify(err));
 			return;
         }else{
-		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
 		  doc.level		= secrets.levels[m.channel];
 		  doc.rank		= 1;
 		  doc.lastUpdated = ""+ new Date();
@@ -73,34 +73,34 @@ exports.saveScore = function( m ) {
  * Get user current score
  *
 **/
-exports.getCurrentScore = function(hashId, channel,callback) {
+exports.getCurrentScore = function(req, res, next) {
+	res.jsonp({points:1,level:1,rank:1});
+/*
+	var hashId	=	req.query.hashId;
+	var userId	=	req.query.userId;
 
-     Score.find({
-            hashId: hashId,
-            channel:channel
-        }, function(err, score) {
 
-          if (err) {
-              console.log(JSON.stringify(err));
-              return;
-          }
-		  else {
-	  		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
-	  		  doc.level		= secrets.levels[m.channel];
-	  		  doc.rank		= 1;
-	  		  doc.lastUpdated = ""+ new Date();
-	  	  	  doc.save();
-	  		  /*
-	  		  doc.maxScore  = secrets.levels[m.channel].maxScore;		  
-	  		  doc.isLevelUpdated = false;		  
-	  		  if( secrets.levels[m.channel].maxScore > doc.points  ) {
-	  			  doc.isLevelUpdated = true;
-	  		  }
-	  		  */
-	  	  }
-               
-     });
+	var query = {};
+	if( userId != "anonymous" ){
+		query	= { hashId: hashId };
+	}else{
+		query	= { userId: userId };
+	}
+	
+	Score.findOne(query, function (err, doc){
+		var ret = {};
+        if ( err ) {
+            ret.err = JSON.stringify(err));
 
+        } else {
+		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+		  doc.level		= secrets.levels[m.channel];
+		  doc.rank		= 1;
+		  doc.lastUpdated = ""+ new Date();
+	  	  doc.save();
+        }
+	});
+	*/
 };
 
 
