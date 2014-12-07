@@ -106,7 +106,7 @@ mysqlClient.connect( function ( err ) {
         // This ensures values for each callback are maintained correctly.
         (function( lvl, wrd, wrdId ){
         
-            mysqlClient.query('SELECT word from words WHERE word SOUNDS LIKE "' + wrd + '" LIMIT 3', function(err2, rowOfSimilarWords, fields2) {
+            mysqlClient.query('SELECT word from words WHERE word SOUNDS LIKE "' + wrd + '" LIMIT 4', function(err2, rowOfSimilarWords, fields2) {
                 if (err) throw err;
             
                 var options = [];
@@ -116,7 +116,7 @@ mysqlClient.connect( function ( err ) {
                 
                 // If the number of options is less, just take the next coming words
                 for ( j = options.length, i = 1; j < 3; j++, i++ ) {
-                    options[j] = rows[wrdId + i];
+                    options[j] = rows[wrdId + i].word;
                 }
             
                 // Confusing words
