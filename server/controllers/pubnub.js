@@ -130,6 +130,8 @@ function messageOnChannel(m, e, c) {
                 // if answer is correct
                 if ( m.sel_option == answerList[currentQuestionId] ) { 
 
+					console.log( "in pubnub line 133 - Correct answer was received");
+					
                     // time difference b/w question post from server, and user reply    
                     var diff = ( ( new Date().getTime() ) - questionPostTimeStamp ) /1000;
                     // calculate points

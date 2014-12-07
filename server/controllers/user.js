@@ -48,11 +48,13 @@ exports.createUser = function(hashId, channel) {
  **/
 exports.saveScore = function( m, callback ) {
 
+	console.log( {msg:"in saveScore fn ", m:m } );
+
 	var query = { hashId: m.hashId, userId: m.userId };
 	
 	Score.findOne(query, function (err, doc){
         if (err) {
-            console.log(JSON.stringify(err));
+			console.log( {msg:"error in save ", err:JSON.stringify(err) } );
 			return;
         }else{
 		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
