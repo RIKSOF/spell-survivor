@@ -110,10 +110,14 @@ mysqlClient.connect( function ( err ) {
                 if (err) throw err;
             
                 var options = [];
-                for ( var j = 0; j < rowOfSimilarWords.length; j++ ) {
-                    options[j] = rowOfSimilarWords[j].word;
+                for ( var j = 1; j < rowOfSimilarWords.length; j++ ) {
+                    options[j-1] = rowOfSimilarWords[j].word;
                 }
-            
+                
+                // If the number of options is less, just take the next coming words
+                for ( j = options.length, i = 1; j < 3; j++, i++ ) {
+                    options[j] = rows[wrdId + i];
+                }
             
                 // Confusing words
                 for ( var key in confusingSpellings ) {
