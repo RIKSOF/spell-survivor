@@ -24,8 +24,8 @@ exports.setupPubnub = function() {
     console.log('setupPubnub');
     RS_PUBNUB = require("pubnub")({
         ssl           : false,  // <- enable TLS Tunneling over TCP
-        publish_key   : "demo",
-        subscribe_key : "demo"
+        publish_key   : "pub-c-c863a948-9010-4dc3-9b0f-5e9903fc2e4f",
+        subscribe_key : "sub-c-a652022e-7d55-11e4-812f-02ee2ddab7fe"
     });
 
 };
