@@ -126,12 +126,12 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
-app.get('/getCurrentScore', apiController.getCurrentScore);
+app.get('/getCurrentScore', userController.getCurrentScore);
 
 /**
  * Cron job routes.
  */
-app.get('/c1SetLevel', userController.c1SetLevel);
+//app.get('/c1SetLevel', apiController.c1SetLevel);
 
 
 /**
