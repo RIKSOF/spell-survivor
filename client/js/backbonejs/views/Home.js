@@ -21,7 +21,8 @@ HomeView = Backbone.View.extend({
 	
 	events: {
 		"click .options li a":"clickOption",
-		"click .skipbutton":"skipAnimation"
+		"click .skipbutton":"skipAnimation",
+		"click .options a":"animatePlank"
 	},
 	
 	skipAnimation : function() {
@@ -96,6 +97,7 @@ HomeView = Backbone.View.extend({
 	
 	finishAnimation: function(){
 		var _home = this;
+		$("body").css({opacity:1});
 		_home.$el.find('.river').css({marginTop:"80px"});
 		_home.$el.find('.mountainsmall').css({height:"282px"});
 		_home.$el.find('.mountainlarge').css({height:"445px"});
@@ -143,6 +145,7 @@ HomeView = Backbone.View.extend({
 						_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainlargeshadow').animate({height:"104px"},9000);
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmallshadow').animate({height:"142px"},9000);
+							$(".skipbutton").hide();
 						},3000);
 					});
 				},3500);		
@@ -166,13 +169,34 @@ HomeView = Backbone.View.extend({
 		_home.$el.find("#countdown").val(_home.count);
 		
 		setInterval(function () {
-			
 			_home.$el.find("#countdown").html(_home.count--);
+			_home.$el.find(".timerMain").animate({ top: "-10px" }, 200, function() {
+			  $(this).animate({ top: "0px" }, 100 );
+			});
 			if (_home.count <= 0) {
 				_home.count = app.defaultCount;
 			}
 		},1000);
 		
+	},
+	
+	animatePlank: function(){
+		var _home = this;
+		_home.$el.find("#options1").parent().animate({left:'-350%'},500);
+		_home.$el.find("#options2").parent().animate({right:'-350%'},500);
+		_home.$el.find("#options3").parent().animate({left:'-350%'},500);
+		_home.$el.find("#options4").parent().animate({right:'-350%'},500,function(){
+			app.pubnubInit();
+		});
+		setTimeout(function(){
+			_home.$el.find(".plank .options #options1").parent().animate({left:0},500,function(){
+				_home.$el.find(".timerMain").animate({top:0},500);
+				app.defaultCount;
+			});
+			_home.$el.find(".plank .options #options2").parent().animate({right:0},500);
+			_home.$el.find(".plank .options #options3").parent().animate({left:0},500);
+			_home.$el.find(".plank .options #options4").parent().animate({right:0},500);
+		},1000);
 	}
 	
 });
