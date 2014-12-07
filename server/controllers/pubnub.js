@@ -15,6 +15,7 @@ var answerList = [];
 var serverStarted = false;
 
 var questionController = require( __dirname + '/question');
+var userController = require( __dirname + '/user');
 
 /**
  * Setup pubnub
@@ -108,6 +109,10 @@ function displayCallback(callBackFor, m, e, c) {
     console.log({callBackFor:callBackFor, m:m, e:e, c:c});
 }
 
+
+/*
+W
+*/
 function messageOnChannel(m, e, c) {
 
     console.log('messageOnChannel');
@@ -125,20 +130,37 @@ function messageOnChannel(m, e, c) {
                 // if answer is correct
                 if ( m.sel_option == answerList[currentQuestionId] ) { 
 
+					console.log( "in pubnub line 133 - Correct answer was received");
+					
                     // time difference b/w question post from server, and user reply    
                     var diff = ( ( new Date().getTime() ) - questionPostTimeStamp ) /1000;
+                    // calculate points
+                    m.points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
+
+					/*
                     console.log('diff : ' + diff);
                     console.log('SCORE_DEDUCT_PER_SECOND : ' + SCORE_DEDUCT_PER_SECOND);
-                    // calculate points
-                    var points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
-
                     console.log('Poinst : ' + points);
                     console.log('Answer : ' + answerList[currentQuestionId]);
+					*/
+
                     // remove answer from list
                     delete answerList[currentQuestionId];
-                    console.log('After delete');
+					
+					//When we recived a correct answer, broadcast to all we have received a correct answer,
+					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
+					userController.saveScore( m, function( doc ){
+						console.log(  "update score card ot the user : "+ doc );
+						if ( RS_PUBNUB != null ) {
+					        RS_PUBNUB.publish({ 
+					            channel   : channel,
+					            message   : doc,
+					            callback  : displayCallback,
+					            error     : displayCallback
+					        });
+					    }
+					});
                 }
-                
             }
 
         } else {

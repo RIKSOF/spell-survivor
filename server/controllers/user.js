@@ -44,73 +44,66 @@ exports.createUser = function(hashId, channel) {
 
 /**
  *
- * Post answer
+ * Save answer in database
  **/
-exports.postAnswer = function(hashId, channel,answer) {
+exports.saveScore = function( m, callback ) {
 
+	console.log( {msg:"in saveScore fn ", m:m } );
 
-        User.find({
-            hashId: hashId
-        }, function(err, u) {
+	var query = { hashId: m.hashId, userId: m.userId };
+	
+	Score.findOne(query, function (err, doc){
+        if (err) {
+			console.log( {msg:"error in save ", err:JSON.stringify(err) } );
+			return;
+        }else{
+		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
+		  doc.level		= secrets.levels[m.channel];
+		  doc.rank		= 1;
+		  doc.lastUpdated = ""+ new Date();
 
-            if (err) {
-                console.log(JSON.stringify(err));
-            }
-
-            // users found
-            if (u.length > 0) {
-
-                // update details
-                Score.update({
-                            "userId":hashId,
-                            "channel": channel
-                        }, { $push: {answers: answer } }, 
-                        {
-                            safe: true, upsert: true
-                        },
-                        function(err, model) {
-
-                            if (err) {
-                                console.log(JSON.stringify(err));
-                            }
-
-                            console.log('answer added successfully.');
-                        });
-               
-
-            } else {
-
-                console.log('no user found for this username: ' + hashId);
-
-            }
-        });
-
+		  doc.hashId	= m.hashId;
+		  doc.userId	= m.userId;
+		  		  
+	  	  doc.save();
+		  
+		  callback( doc );
+        }
+	});
 };
 
 /**
  * Get user current score
  *
 **/
-exports.getCurrentScore = function(hashId, channel,callback) {
+exports.getCurrentScore = function(req, res, next) {
+	res.jsonp({points:1,level:1,rank:1});
+/*
+	var hashId	=	req.query.hashId;
+	var userId	=	req.query.userId;
 
-     Score.find({
-            hashId: hashId,
-            channel:channel
-        }, function(err, score) {
 
-            if (err) {
-                console.log(JSON.stringify(err));
-                return;
-            }
+	var query = {};
+	if( userId != "anonymous" ){
+		query	= { hashId: hashId };
+	}else{
+		query	= { userId: userId };
+	}
+	
+	Score.findOne(query, function (err, doc){
+		var ret = {};
+        if ( err ) {
+            ret.err = JSON.stringify(err));
 
-            var points = 0;
-
-            if( score.answer.length > 0 ) {
-                points += Number(answer.points);
-            }
-               
-     });
-
+        } else {
+		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+		  doc.level		= secrets.levels[m.channel];
+		  doc.rank		= 1;
+		  doc.lastUpdated = ""+ new Date();
+	  	  doc.save();
+        }
+	});
+	*/
 };
 
 
