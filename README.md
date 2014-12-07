@@ -1,6 +1,5 @@
-spell-survivor
+Spell Survivor
 ==============
-
 Koding Hackathon Repository
 
 API Used
