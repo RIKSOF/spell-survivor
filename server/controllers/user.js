@@ -46,25 +46,28 @@ exports.createUser = function(hashId, channel) {
  *
  * Save answer in database
  **/
-exports.saveScore = function( m ) {
+exports.saveScore = function( m, callback ) {
 
-	var query = {};
-	if( m.userId != "anonymous" ){
-		query	= { hashId: m.hashId };
-	}else{
-		query	= { userId: m.userId };
-	}
+	console.log( {msg:"in saveScore fn ", m:m } );
+
+	var query = { hashId: m.hashId, userId: m.userId };
 	
 	Score.findOne(query, function (err, doc){
         if (err) {
-            console.log(JSON.stringify(err));
+			console.log( {msg:"error in save ", err:JSON.stringify(err) } );
 			return;
         }else{
 		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
 		  doc.level		= secrets.levels[m.channel];
 		  doc.rank		= 1;
 		  doc.lastUpdated = ""+ new Date();
+
+		  doc.hashId	= m.hashId;
+		  doc.userId	= m.userId;
+		  		  
 	  	  doc.save();
+		  
+		  callback( doc );
         }
 	});
 };

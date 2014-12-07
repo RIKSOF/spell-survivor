@@ -130,6 +130,8 @@ function messageOnChannel(m, e, c) {
                 // if answer is correct
                 if ( m.sel_option == answerList[currentQuestionId] ) { 
 
+					console.log( "in pubnub line 133 - Correct answer was received");
+					
                     // time difference b/w question post from server, and user reply    
                     var diff = ( ( new Date().getTime() ) - questionPostTimeStamp ) /1000;
                     // calculate points
@@ -145,7 +147,19 @@ function messageOnChannel(m, e, c) {
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
-					userController.saveScore( m  );
+					//When we recived a correct answer, broadcast to all we have received a correct answer,
+					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
+					userController.saveScore( m, function( doc ){
+						console.log(  "update score card ot the user : "+ doc );
+						if ( RS_PUBNUB != null ) {
+					        RS_PUBNUB.publish({ 
+					            channel   : channel,
+					            message   : doc,
+					            callback  : displayCallback,
+					            error     : displayCallback
+					        });
+					    }
+					});
                 }
             }
 
