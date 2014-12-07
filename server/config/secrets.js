@@ -15,10 +15,20 @@
  * If you have already commited this file to GitHub with your keys, then
  * refer to https://help.github.com/articles/remove-sensitive-data
 */
+var config = {};
+config.mysql = {};
+config.mysql.user		= "root";
+config.mysql.password	= "root";
+config.mysql.host		= "192.168.2.103";
+//config.mysql.port		= "3306";
+config.mysql.db			= "wordsdb";
+
 
 module.exports = {
-
+  config: config,
+	
   db: process.env.MONGOLAB_URI || process.env.MONGODB || 'mongodb://admin:admin@ds061200.mongolab.com:61200/spell-survivor',
+  //mysql: 'mysql://'   + config.mysql.user + ':' + config.mysql.password + '@' + config.mysql.host + ':' + config.mysql.port + '/' + config.mysql.db,
 
   sessionSecret: process.env.SESSION_SECRET || 'TeamRiksofSessionSecret',
 
