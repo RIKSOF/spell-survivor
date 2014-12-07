@@ -73,6 +73,13 @@ exports.publishPubnub= function(channel, message) {
             callback  : displayCallback,
             error     : displayCallback
         });
+
+        // question is posted, now set null to questionToPost            
+        questionToPost = null;
+
+        // ask for another question
+        questionController.getQuestion(4, getQuestionCallback);
+
     } else {
 
         displayCallback('RS_PUBNUB is null inside publishPubnub');
@@ -125,11 +132,6 @@ function messageOnChannel(m, e, c) {
             console.log( "At timestamp" + questionPostTimeStamp );
             console.log ("At time " + (new Date(questionPostTimeStamp)) );
             
-            // question is posted, now set null to questionToPost            
-            questionToPost = null;
-
-            // ask for another question
-            questionController.getQuestion(4, getQuestionCallback);
         }
     }
 
@@ -165,28 +167,6 @@ setInterval( function() {
 function getQuestionCallback(question) {
 
     questionToPost = question;
-    
-    /*console.log('getQuestion');
-    //console.log(question);
-    // no question will be posted on first server run
-    if ( !serverFirstRun ) {
-         console.log('Running for the first time');
-         serverFirstRun = true;
-         questionToPost = question;
-    } else {
-
-        i++;
-        console.log('Running for ' + i);
-        // for second time, and now on publish question set in questionToPost
-        if ( questionToPost != null ) {
-           // publish question
-           exports.publishPubnub( CHANNEL_NAME, questionToPost );
-
-           // set for next
-           questionToPost = question;
-        }
-        //exports.publishPubnub( CHANNEL_NAME, question )
-    }*/
 }
 
 
