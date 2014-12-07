@@ -57,10 +57,14 @@ var app = {
 					app.resetAudio();
 					
 					// set variable to false to enable click on screen
-					this.clickDisable = false;
+					app.home.clickDisable = false;
 					
 					// set the question model
 					app.question.set(message);
+					
+				}
+				
+				if ( message.sender == "updateScoreCard" ) {
 					
 				}
 				
