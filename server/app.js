@@ -27,7 +27,6 @@ var connectAssets = require('connect-assets');
  */
 
 var pubnubController = require('./controllers/pubnub');
-var cronJobsController = require('./controllers/cronJobs');
 var questionController = require('./controllers/question');
 var userController = require('./controllers/user');
 

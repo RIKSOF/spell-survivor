@@ -44,7 +44,7 @@ var app = {
 		this.pubnub.subscribe({
 			channel  : this.channel,
 			callback : function(message) {
-				
+				console.log(message);
 				if ( message.sender == "server" ) {
 					
 					// set current answer
@@ -53,8 +53,18 @@ var app = {
 					// first reset the counter
 					app.resetCount();
 					
+					// if audio still left .. reset
+					app.resetAudio();
+					
+					// set variable to false to enable click on screen
+					app.home.clickDisable = false;
+					
 					// set the question model
 					app.question.set(message);
+					
+				}
+				
+				if ( message.sender == "updateScoreCard" ) {
 					
 				}
 				
@@ -112,8 +122,22 @@ var app = {
 		return hash.toString(CryptoJS.enc.Hex);
 	},
 	
+	// currentAudio Interval to end interval in case of user answers the question
+	_audioInterval: null,
+	
 	playSpelling: function (url) {
-			
+		
+		var audio = new Audio(url);
+		audio.play();
+		var count = 0;
+		_app = this;
+		_app._audioInterval = setInterval(function () {
+			audio.play();
+			if ( count == 1 ) {
+				clearInterval(_app._audioInterval);
+			}
+			count++;
+		},5000);
 	},
 	
 	initCount: function () {
@@ -130,6 +154,13 @@ var app = {
 	
 	resetCount: function() {
 		app.home.$el.find("#countdown").val(0);
+	},
+	
+	resetAudio: function() {
+		if ( app._audioInterval != null ) {
+			clearInterval(app._audioInterval);
+			app._audioInterval = null;
+		}
 	}
 	
 }

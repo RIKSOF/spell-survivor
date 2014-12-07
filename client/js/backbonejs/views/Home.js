@@ -36,10 +36,21 @@ HomeView = Backbone.View.extend({
 		this.finishAnimation();
 	},
 	
+	//handle variable if already clicked
+	clickDisable: false,
+	
 	clickOption: function (e) {
-		e.preventDefault();
-		var selectOpt = e.currentTarget.innerHTML;
-		app.pubnubPublish(app.question.get("id"),selectOpt);
+		if ( !this.clickDisable ) {
+			
+			this.animatePlank();
+			e.preventDefault();
+			
+			var selectOpt = e.currentTarget.innerHTML;
+			app.pubnubPublish(app.question.get("id"),selectOpt);
+			
+			app.resetAudio();
+			this.clickDisable = true;
+		}
 	},
 	
 	titleAnimate:function(){
@@ -68,22 +79,9 @@ HomeView = Backbone.View.extend({
 	loadPlank: function(){
 		var _home = this;
 		_home.$el.find(".cactus").animate({right:0},500);
+		_home.$el.find('.scoreboard').animate({left:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
 		_home.$el.find(".timerMain").animate({top:0},500);
-				
-				//Quiz Voice start
-//				var audioElement = document.createElement('audio');
-//				audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
-//				audioElement.setAttribute('autoplay', 'autoplay');
-//				//audioElement.load()
-//				audioElement.addEventListener("load", function() {
-//            		audioElement.play();
-//				}, true);
-//				setInterval(function(){ 
-//					if(counting.Timer.isActive)
-//						audioElement.play(); 
-//				}, 5000);
-				// Quiz voice end
 				
 				// init the quiz
 				app.pubnubInit();
@@ -93,6 +91,7 @@ HomeView = Backbone.View.extend({
 	
 	finishAnimation: function(){
 		var _home = this;
+		$("body").css({opacity:1});
 		_home.$el.find('.river').css({marginTop:"80px"});
 		_home.$el.find('.mountainsmall').css({height:"282px"});
 		_home.$el.find('.mountainlarge').css({height:"445px"});
@@ -140,6 +139,7 @@ HomeView = Backbone.View.extend({
 						_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainlargeshadow').animate({height:"104px"},9000);
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmallshadow').animate({height:"142px"},9000);
+							$(".skipbutton").hide();
 						},3000);
 					});
 				},3500);		
@@ -153,8 +153,16 @@ HomeView = Backbone.View.extend({
 		
 		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 			_home.audioTheme.pause();
-			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
+//			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
 		},48000);
+	},
+	
+	animatePlank: function(){
+		
+		this.$el.find("#options1").parent().animate({left:'-350%'},500);
+		this.$el.find("#options2").parent().animate({right:'-350%'},500);
+		this.$el.find("#options3").parent().animate({left:'-350%'},500);
+		this.$el.find("#options4").parent().animate({right:'-350%'},500);
 	}
 	
 });
