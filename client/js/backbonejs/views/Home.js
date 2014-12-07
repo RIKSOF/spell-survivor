@@ -79,6 +79,7 @@ HomeView = Backbone.View.extend({
 	loadPlank: function(){
 		var _home = this;
 		_home.$el.find(".cactus").animate({right:0},500);
+		_home.$el.find('.scoreboard').animate({left:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
 		_home.$el.find(".timerMain").animate({top:0},500);
 				
