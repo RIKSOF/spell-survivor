@@ -3,12 +3,16 @@ var RS_PUBNUB = null;
 var CURRENT_CHANNEL = null;
 var CHANNEL_NAME = 'spell-survivor';
 var MAX_SCORE = 100;
-var QUESTION_POST_MAX_TIME = 5000; // In milli second
+var QUESTION_POST_MAX_TIME = 15000; // In milli second
 var SCORE_DEDUCT_PER_SECOND = 2;
 var questionPostTimeStamp = 0;
 var currentQuestionId = null;
+var questionToPost = null;
+var serverFirstRun = false;
 var channels = new Array();
 var scores = new Array();
+
+var questionController = require( __dirname + '/question');
 
 /**
  * Setup pubnub
@@ -120,9 +124,15 @@ function messageOnChannel(m, e, c) {
             console.log( "Message from server " + JSON.stringify(m) );
             console.log( "At timestamp" + questionPostTimeStamp );
             console.log ("At time " + (new Date(questionPostTimeStamp)) );
+            
+            // question is posted, now set null to questionToPost            
+            questionToPost = null;
 
+            // ask for another question
+            questionController.getQuestion(4, getQuestionCallback);
         }
     }
+
     // Use first and last args
     //console.log({callBackFor:"messageOnChannel line:71", m:m, e:e, c:c});
 }
@@ -137,21 +147,46 @@ function errorOnSubscribeChannel(m, e, c) {
 exports.setupPubnub();
 exports.subscribePubnub( CHANNEL_NAME );
 
-function getUniqueId(){
-    return ( new Date().getTime()+"-"+Math.random(0,100) );
+// this functon will call once server get started
+setInterval( function() {
+
+    if ( questionToPost == null ) {
+        questionController.getQuestion(4, getQuestionCallback);
+    } else {
+        exports.publishPubnub( CHANNEL_NAME, questionToPost );
+    }
+   
+}, QUESTION_POST_MAX_TIME );
+
+/**
+ * Question callback
+ * This function will process question data
+ **/
+function getQuestionCallback(question) {
+
+    questionToPost = question;
+    
+    /*console.log('getQuestion');
+    //console.log(question);
+    // no question will be posted on first server run
+    if ( !serverFirstRun ) {
+         console.log('Running for the first time');
+         serverFirstRun = true;
+         questionToPost = question;
+    } else {
+
+        i++;
+        console.log('Running for ' + i);
+        // for second time, and now on publish question set in questionToPost
+        if ( questionToPost != null ) {
+           // publish question
+           exports.publishPubnub( CHANNEL_NAME, questionToPost );
+
+           // set for next
+           questionToPost = question;
+        }
+        //exports.publishPubnub( CHANNEL_NAME, question )
+    }*/
 }
 
-var questionAry = [
- { "id":getUniqueId(), "q":"Apple", "options":["Aple", "Aaple", "Apele", "Apple"], sender:"server"}
-,{ "id":getUniqueId(), "q":"Ball", "options":["Boll", "Balle", "Ball", "Bale"], sender:"server"}
-,{ "id":getUniqueId(), "q":"Cat", "options":["Cet", "Kat", "Cte", "Cat"], sender:"server"}
-,{ "id":getUniqueId(), "q":"Doll", "options":["Dole", "Dule", "Doll", "Dolle"], sender:"server"}
-];
-
-
-
-/*setInterval( function() {
-    exports.publishPubnub( CHANNEL_NAME, questionAry[Math.floor(Math.random() * 4)] );
-}, QUESTION_POST_MAX_TIME );
-*/
 
