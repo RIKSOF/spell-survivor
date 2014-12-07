@@ -1,5 +1,7 @@
 HomeView = Backbone.View.extend({
 	
+	count: 0,
+	
 	initialize: function( options ){
 		this.render();
 	},
@@ -9,6 +11,7 @@ HomeView = Backbone.View.extend({
 		this.$el.html(template);
 		
 		this.initAnimation();
+		this.count = app.defaultCount;
 	},
 	
 	events: {
@@ -24,17 +27,17 @@ HomeView = Backbone.View.extend({
 	initAnimation: function () {
 		//Audio theme start
 		var audioTheme = document.createElement('audio');
-        audioTheme.setAttribute('src', 'audio/theme.mp3');
-        audioTheme.setAttribute('autoplay', 'autoplay');
+		audioTheme.setAttribute('src', 'audio/theme.mp3');
+		audioTheme.setAttribute('autoplay', 'autoplay');
         //audioElement.load()
 		
 		var _home = this;
 		
         $.get();
 
-        audioTheme.addEventListener("load", function() {
-            audioElement.play();
-        }, true);
+		audioTheme.addEventListener("load", function() {
+			audioElement.play();
+		}, true);
 
 		audioTheme.play(); 
 		//Audio theme end
@@ -97,10 +100,26 @@ HomeView = Backbone.View.extend({
 				
 				// init the quiz
 				app.pubnubInit();
+				_home.initCount();
 				
 			});
 			_home.$el.find(".cactus").animate({right:0},500);
 		},48000);
+	},
+	
+	initCount: function () {
+		var _home = this;
+		
+		_home.$el.find("#countdown").val(_home.count);
+		
+		setInterval(function () {
+			
+			_home.$el.find("#countdown").html(_home.count--);
+			if (_home.count <= 0) {
+				_home.count = app.defaultCount;
+			}
+		},1000);
+		
 	}
 	
 });
