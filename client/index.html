@@ -1,0 +1,82 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/animate.css" rel="stylesheet">
+    
+    <title>Spell Survivor</title>
+
+</head>
+
+<body>
+<div id="home"></div>
+<script type="text/template" id="homeTemplate">
+	<section class="logotext">
+		<ul class="texts" style="display: none">
+			<li>Spell Survivor</li>
+			<li></li>
+		</ul>
+	</section>
+	<section class="sky"></section>
+	<section class="sun"></section>
+	<section class="upperpart">
+		<div class="mountainlarge"><img src="images/mountain_large.png" /></div>
+		<div class="mountainsmall"><img src="images/mountain_small.png" /></div>
+	</section>
+	<section class="lowerpart">
+		<div class="river"></div>
+		<div class="sand"></div>
+		<div class="mountainlargeshadow"><img src="images/mountain_largeshadow.png" /></div>
+		<div class="mountainsmallshadow"><img src="images/mountain_smallshadow.png" /></div>
+	</section>
+	<section class="plankboard">
+		<div class="timerMain">
+			<div id="countdown" class="timer">15</div>
+		</div>
+		<div class="plank">
+			<ul class="options">
+				<li><a href="#" id="options1">Apple</a></li>
+				<li><a href="#" id="options2">Apple</a></li>
+				<li><a href="#" id="options3">Apple</a></li>
+				<li><a href="#" id="options4">Apple</a></li>
+			</ul>
+			<div class="speakericon"><a href="#"><img src="images/speaker.png"></a></div>
+		</div>
+	</section>
+	<section class="scoreboard">0000001</section>
+	<section class="userinfo">
+		<div class="userimg"><a href="#"><img src="images/img.jpg" /></a></div>
+		<div class="username"><a href="#">Sharjeelkhan</a></div>
+	</section>
+	<section class="backbutton">
+		<a href="#"><img src="images/backbutton.png" /></a>
+	</section>
+	<section class="cactus">
+	</section>
+</script>
+
+<script src="js/lib/jquery-1.11.1.min.js"></script>
+<script src="js/lib/md5.js"></script>
+
+<!-- Animation -->
+<script src="js/lib/jquery.fittext.js"></script>
+<script src="js/lib/jquery.lettering.js"></script>
+<script src="js/lib/jquery.textillate.js"></script>
+
+<script src="js/lib/json2.js"></script>
+<script src="js/lib/underscore.js"></script>
+<script src="js/lib/backbone-min.js"></script>
+
+<!-- Backnone Model -->
+<script type="text/javascript" src="js/backbonejs/models/Question.js"></script>
+    
+<!-- Backnone views -->
+<script src="js/backbonejs/views/Home.js"></script>
+
+<script src="js/lib/pubnub.min.js"></script>
+<script src="js/riksof-pubnub.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
