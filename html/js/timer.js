@@ -23,7 +23,7 @@ var counting = new (function() {
             $countdown = $('#countdown');
 			setTimeout(function(){
             counting.Timer = $.timer(updateTimer, incrementTime, true);
-			},46000);
+			},49000);
         };
     this.resetCountdown = function() {
         var newTime = parseInt($form.find('input[type=text]').val()) * 100;
