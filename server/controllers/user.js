@@ -57,7 +57,7 @@ exports.saveScore = function(m, callback) {
         hashUid: m.hashUid,
         userId: m.userId
     };
-
+    
     Score.findOne(query, function(err, doc) {
         if (err) {
             console.log({
@@ -71,17 +71,19 @@ exports.saveScore = function(m, callback) {
                 doc: doc
             });
 
-            doc = (doc == undefined) ? new Score() : doc;
-            doc.points = (doc.point == undefined) ? 0 : doc.points;
-            doc.level = (doc.level == undefined) ? 0 : doc.level;
-            doc.rank = (doc.rank == undefined) ? 0 : doc.rank;
+            if( doc == null ) {
 
+                doc = new Score();
+                doc.points = 0;
+                doc.level = 0;
+                doc.rank = 0;
+            } 
+            
             doc.channel = m.channel;
             doc.points = (doc.points + m.points);
             doc.level = secrets.levels[m.channel];
             doc.rank = 1;
             doc.lastUpdated = "" + new Date();
-
             doc.hashUid = m.hashUid;
             doc.userId = m.userId;
 
