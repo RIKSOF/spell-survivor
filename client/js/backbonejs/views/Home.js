@@ -19,8 +19,7 @@ HomeView = Backbone.View.extend({
 	
 	events: {
 		"click .options li a":"clickOption",
-		"click .skipbutton":"skipAnimation",
-		"click .options a":"animatePlank"
+		"click .skipbutton":"skipAnimation"
 	},
 	
 	skipAnimation : function() {
@@ -42,6 +41,8 @@ HomeView = Backbone.View.extend({
 	
 	clickOption: function (e) {
 		if ( !this.clickDisable ) {
+			
+			this.animatePlank();
 			e.preventDefault();
 			
 			var selectOpt = e.currentTarget.innerHTML;
@@ -156,22 +157,11 @@ HomeView = Backbone.View.extend({
 	},
 	
 	animatePlank: function(){
-		var _home = this;
-		_home.$el.find("#options1").parent().animate({left:'-350%'},500);
-		_home.$el.find("#options2").parent().animate({right:'-350%'},500);
-		_home.$el.find("#options3").parent().animate({left:'-350%'},500);
-		_home.$el.find("#options4").parent().animate({right:'-350%'},500,function(){
-			app.pubnubInit();
-		});
-		setTimeout(function(){
-			_home.$el.find(".plank .options #options1").parent().animate({left:0},500,function(){
-				_home.$el.find(".timerMain").animate({top:0},500);
-				app.defaultCount;
-			});
-			_home.$el.find(".plank .options #options2").parent().animate({right:0},500);
-			_home.$el.find(".plank .options #options3").parent().animate({left:0},500);
-			_home.$el.find(".plank .options #options4").parent().animate({right:0},500);
-		},1000);
+		
+		this.$el.find("#options1").parent().animate({left:'-350%'},500);
+		this.$el.find("#options2").parent().animate({right:'-350%'},500);
+		this.$el.find("#options3").parent().animate({left:'-350%'},500);
+		this.$el.find("#options4").parent().animate({right:'-350%'},500);
 	}
 	
 });
