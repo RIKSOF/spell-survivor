@@ -145,7 +145,19 @@ function messageOnChannel(m, e, c) {
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
-					userController.saveScore( m  );
+					//When we recived a correct answer, broadcast to all we have received a correct answer,
+					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
+					userController.saveScore( m, function( doc ){
+						console.log(  "update score card ot the user : "+ doc );
+						if ( RS_PUBNUB != null ) {
+					        RS_PUBNUB.publish({ 
+					            channel   : channel,
+					            message   : doc,
+					            callback  : displayCallback,
+					            error     : displayCallback
+					        });
+					    }
+					});
                 }
             }
 

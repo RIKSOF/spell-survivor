@@ -46,14 +46,9 @@ exports.createUser = function(hashId, channel) {
  *
  * Save answer in database
  **/
-exports.saveScore = function( m ) {
+exports.saveScore = function( m, callback ) {
 
-	var query = {};
-	if( m.userId != "anonymous" ){
-		query	= { hashId: m.hashId };
-	}else{
-		query	= { userId: m.userId };
-	}
+	var query = { hashId: m.hashId, userId: m.userId };
 	
 	Score.findOne(query, function (err, doc){
         if (err) {
@@ -64,7 +59,13 @@ exports.saveScore = function( m ) {
 		  doc.level		= secrets.levels[m.channel];
 		  doc.rank		= 1;
 		  doc.lastUpdated = ""+ new Date();
+
+		  doc.hashId	= m.hashId;
+		  doc.userId	= m.userId;
+		  		  
 	  	  doc.save();
+		  
+		  callback( doc );
         }
 	});
 };
