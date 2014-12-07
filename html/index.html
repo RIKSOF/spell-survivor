@@ -1,0 +1,138 @@
+<!DOCTYPE html5>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/animate.css" rel="stylesheet">
+<title>Spell Survivor</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.timer.js"></script>
+<script type="text/javascript" src="js/timer.js"></script>
+<script src="js/jquery.fittext.js"></script>
+<script src="js/jquery.lettering.js"></script>
+<script src="js/jquery.textillate.js"></script>
+<script>
+    $(document).ready(function() {
+		//Audio theme start
+		var audioTheme = document.createElement('audio');
+        audioTheme.setAttribute('src', 'audio/theme.mp3');
+        audioTheme.setAttribute('autoplay', 'autoplay');
+        //audioElement.load()
+
+        $.get();
+
+        audioTheme.addEventListener("load", function() {
+            audioElement.play();
+        }, true);
+
+		audioTheme.play(); 
+		//Audio theme end
+        setTimeout(function(){
+			$("body").animate({opacity:1},2000);
+		},3000);
+		setTimeout(function(){
+			$('.river').animate({marginTop:"80px"},15000);
+			$('.mountainsmall').animate({height:"282px"},15000);
+			$('.mountainlarge').animate({height:"445px"},15000,function(){
+				$('.sky').animate({opacity:0},12000);
+				$('.sun').animate({top:"-500px",opacity:1},12000);
+				$('.mountainlarge').animate({opacity:1},12000);
+				$('.mountainsmall').animate({opacity:1},12000);
+				setTimeout(function(){
+					$('.mountainlargeshadow').animate({height:"104px"},9000);
+					$('.mountainsmallshadow').animate({height:"142px"},9000);
+				},3000);
+			});
+		},8500);
+		
+		var getFormData = function () {
+		var data = { 
+			loop: false, 
+			in: { callback: "", effect: "bounceInDown", reverse: false, shuffle: true, sync: false }, 
+			out: { callback: "", effect: "hinge", reverse: false, shuffle: true, sync: false }
+		  };
+		  return data;
+		};
+		setTimeout(function(){
+			var $tlt = $('.logotext')
+			  .on('start.tlt', '')
+			  .on('inAnimationBegin.tlt', '')
+			  .on('inAnimationEnd.tlt', '')
+			  .on('outAnimationBegin.tlt', '')
+			  .on('outAnimationEnd.tlt', '')
+			  .on('end.tlt', '');
+			
+			var obj = getFormData();
+			$tlt.textillate(obj);
+		},35000);
+		setTimeout(function(){
+			audioTheme.pause();
+			$(".plank").animate({left:0},500,function(){
+				$(".timerMain").animate({top:0},500);
+				
+				//Quiz Voice start
+				var audioElement = document.createElement('audio');
+				audioElement.setAttribute('src', 'http://media.tts-api.com/0190e761bba7bf93fac099718ddb33fd9b3bea1f.mp3');
+				audioElement.setAttribute('autoplay', 'autoplay');
+				//audioElement.load()
+				audioElement.addEventListener("load", function() {
+            	audioElement.play();
+				}, true);
+				setInterval(function(){ 
+					if(counting.Timer.isActive)
+						audioElement.play(); 
+				}, 5000);
+				// Quiz voice end
+				
+			});
+			$(".cactus").animate({right:0},500);
+		},48000);
+    });
+</script>     
+</head>
+
+<body>
+<section class="logotext">
+	<ul class="texts" style="display: none">
+        <li>Spell Survivor</li>
+        <li></li>
+    </ul>
+</section>
+<section class="sky"></section>
+<section class="sun"></section>
+<section class="upperpart">
+	<div class="mountainlarge"><img src="images/mountain_large.png" /></div>
+    <div class="mountainsmall"><img src="images/mountain_small.png" /></div>
+</section>
+<section class="lowerpart">
+	<div class="river"></div>
+    <div class="sand"></div>
+    <div class="mountainlargeshadow"><img src="images/mountain_largeshadow.png" /></div>
+    <div class="mountainsmallshadow"><img src="images/mountain_smallshadow.png" /></div>
+</section>
+<section class="plankboard">
+	<div class="timerMain">
+    	<div id="countdown" class="timer">15</div>
+    </div>
+	<div class="plank">
+    	<ul class="options">
+        	<li><a href="#">Apple</a></li>
+            <li><a href="#">Apple</a></li>
+            <li><a href="#">Apple</a></li>
+            <li><a href="#">Apple</a></li>
+        </ul>
+        <div class="speakericon"><a href="#"><img src="images/speaker.png"></a></div>
+    </div>
+</section>
+<section class="scoreboard">0000001</section>
+<section class="userinfo">
+	<div class="userimg"><a href="#"><img src="images/img.jpg" /></a></div>
+    <div class="username"><a href="#">Sharjeelkhan</a></div>
+</section>
+<section class="backbutton">
+	<a href="#"><img src="images/backbutton.png" /></a>
+</section>
+<section class="cactus">
+</section>
+</body>
+</html>
