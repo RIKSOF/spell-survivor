@@ -20,7 +20,7 @@ var app = {
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
-	channel: "spell-survivor-level1-rufi",
+	channel: "spell-survivor-level1-zee1",
 	
 	question: null,
 	scoreCard: null,
@@ -53,7 +53,6 @@ var app = {
 					
 					//
 					app.home.animatePlank();
-					
 					// set current answer
 					currentMessage = message;
 					
