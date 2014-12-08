@@ -47,7 +47,6 @@ HomeView = Backbone.View.extend({
 		});
 		
 		$.each( this.AnimateObj, function( key, value ) { 
-		    console.log("skipAnimation value", value);
  			value.stop();
 		});
 		
@@ -117,6 +116,8 @@ HomeView = Backbone.View.extend({
 	loadPlank: function(){
 		var _home = this;
 		_home.$el.find(".cactus").animate({right:0},500);
+		_home.$el.find(".plankboard").css("z-index",9);
+		_home.$el.find(".plank").parent().css("z-index",99);
 		_home.$el.find('.scoreboard').animate({left:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
 			_home.$el.find(".timerMain").animate({top:0},500);
