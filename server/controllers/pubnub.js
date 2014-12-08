@@ -127,8 +127,8 @@ function messageOnChannel(m, e, c) {
                 
                 console.log( "Message/Reply from user " + JSON.stringify(m) );
     
-                // if answer is correct
-                if ( m.sel_option == answerList[currentQuestionId] ) { 
+                // if answer is correct [Reply to all about some one answered with userId(who have answered)].
+                if ( m.sel_option == answerList[currentQuestionId] ) {
 
 					console.log( "in pubnub line 133 - Correct answer was received");
 					
@@ -138,12 +138,14 @@ function messageOnChannel(m, e, c) {
                     m.points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
 
 					/*
-                    console.log('diff : ' + diff);
-                    console.log('SCORE_DEDUCT_PER_SECOND : ' + SCORE_DEDUCT_PER_SECOND);
-                    console.log('Poinst : ' + points);
-                    console.log('Answer : ' + answerList[currentQuestionId]);
+                    console.log( { 
+						diff: diff,
+						SCORE_DEDUCT_PER_SECOND : SCORE_DEDUCT_PER_SECOND,
+						Poinst : points,
+						Answer : answerList[currentQuestionId] 
+					} );
 					*/
-
+					
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
@@ -161,6 +163,36 @@ function messageOnChannel(m, e, c) {
 					    }
 					});
                 }
+				// else answer is wrong/correct but late [Reply to all about some one answered with userId(who have answered)].
+				else{
+					//for safe side
+					m.points	=	(m.points == undefined ) ? 0 : m.points;
+					m.level		=	(m.level == undefined ) ? 0 : m.level;
+					m.channel	=	(m.channel == undefined ) ? CHANNEL_NAME : m.channel;
+					m.hashId	=	(m.hashId == undefined ) ? 0 : m.hashId;
+					m.userId	=	(m.userId == undefined ) ? 0 : m.userId;
+					
+					var doc = {};
+					//Vars required When user select the option[ for new user send the default values ]
+					doc.points	= m.points;
+					doc.level	= secrets.levels[m.channel];
+					doc.rank	= 1; 
+					doc.hashId	= m.hashId;
+					doc.userId	= m.userId;		  		  
+
+					//server can create these vars if not found
+					doc.lastUpdated = ""+ new Date();
+					
+					
+					channel	=	m.channel;
+
+					if ( RS_PUBNUB != null ) {
+					    RS_PUBNUB.publish({ 
+					        channel   : channel,
+					        message   : doc
+					    });
+					}
+				}
             }
 
         } else {

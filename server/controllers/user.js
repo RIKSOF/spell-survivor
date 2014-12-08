@@ -57,14 +57,15 @@ exports.saveScore = function( m, callback ) {
 			console.log( {msg:"error in save ", err:JSON.stringify(err) } );
 			return;
         }else{
+		  //Vars required When user select the option[ for new user send the default values ]
 		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
 		  doc.level		= secrets.levels[m.channel];
-		  doc.rank		= 1;
-		  doc.lastUpdated = ""+ new Date();
-
+		  doc.rank		= 1; 
 		  doc.hashId	= m.hashId;
-		  doc.userId	= m.userId;
-		  		  
+		  doc.userId	= m.userId;		  		  
+		  
+		  //server can create these vars if not found
+  		  doc.lastUpdated = ""+ new Date();
 	  	  doc.save();
 		  
 		  callback( doc );
