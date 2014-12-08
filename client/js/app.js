@@ -36,6 +36,7 @@ var app = {
 	},
 	
 	pubnubInit: function (){
+		// called from Home.js when StartGame
 		this.pubnub = PUBNUB.init({
 			publish_key: this.publishKey,
 			subscribe_key: this.subscribeKey
