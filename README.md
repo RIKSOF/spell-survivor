@@ -3,7 +3,7 @@ An engaging game multi-player Spelling Bee competition. Helps users learn spelli
 
 ### Description
 
-- An endless spelling bee compeition.
+- An endless spelling bee competition.
 - Multiplayer game that can be scaled to millions of users.
 - 7 levels with increasing difficulty of words.
 - 128,000 words that can be scaled to cover all words in the english language.
