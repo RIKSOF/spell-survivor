@@ -124,9 +124,9 @@ HomeView = Backbone.View.extend({
 		_home.$el.find('.scoreboard').animate({left:0},500);
 		_home.$el.find(".plank").animate({left:0},500,function(){
 			_home.$el.find(".timerMain").animate({top:0},500);
-				// init the quiz
-				app.pubnubInit();
-			});
+			// init the quiz
+			app.pubnubInit();
+		});
 	},
 	
 	finishAnimation: function(){

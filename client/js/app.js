@@ -157,7 +157,7 @@ var app = {
 			// keep default values for points, rank and level
 			sessionStorage.setItem("points",0);
 			sessionStorage.setItem("rank",0);
-			sessionStorage.setItem("level",0);
+			sessionStorage.setItem("level",1);
 			
 		}
 		
