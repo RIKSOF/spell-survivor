@@ -2,7 +2,7 @@ var secrets = require('../config/secrets');
 
 var RS_PUBNUB = null;
 var CURRENT_CHANNEL = null;
-var CHANNEL_NAME = 'spell-survivor-level1-rufi';
+var CHANNEL_NAME = 'spell-survivor-level1-rufi1';
 var MAX_SCORE = 100;
 var QUESTION_POST_MAX_TIME = 15000; // In milli second
 var SCORE_DEDUCT_PER_SECOND = 2;
@@ -75,6 +75,7 @@ exports.publishPubnub= function(channel, message) {
         answerList[ message.id ] = message.a ;
         currentQuestionId = message.id;
 
+		//Delete answer for security purpose
         delete message.a;
 
         RS_PUBNUB.publish({ 
@@ -117,8 +118,7 @@ W
 */
 function messageOnChannel(m, e, c) {
 
-    console.log('messageOnChannel');
-    console.log('Channel name: ' + c);
+    console.log('messageOnChannel - Channel name: ' + c);
 
     if ( m ) {
         
@@ -175,12 +175,12 @@ function messageOnChannel(m, e, c) {
 				// else answer is wrong/correct but late [Reply to all about some one answered with userId(who have answered)].
 				else{
 					//for safe side
-					m.points	=	(m.points == undefined ) ? 0 : m.points;
-					m.level		=	(m.level == undefined ) ? 1 : m.level;
-					m.rank		=	(m.rank == undefined ) ? 0 : m.rank;					
-					m.channel	=	(m.channel == undefined ) ? CHANNEL_NAME : m.channel;
-					m.hashId	=	(m.hashId == undefined ) ? 0 : m.hashId;
-					m.userId	=	(m.userId == undefined ) ? 0 : m.userId;
+					m.points	=	(m.points == undefined || m.points == null ) ? 0 : m.points;
+					m.level		=	(m.level == undefined  || m.level == null ) ? 1 : m.level;
+					m.rank		=	(m.rank == undefined  || m.rank == null ) ? 0 : m.rank;					
+					m.channel	=	(m.channel == undefined  || m.channel == null ) ? CHANNEL_NAME : m.channel;
+					m.hashUid	=	(m.hashUid == undefined  || m.hashUid == null ) ? 0 : m.hashUid;
+					m.userId	=	(m.userId == undefined  || m.userId == null ) ? 0 : m.userId;
 					
 					
 					var doc = {};
@@ -188,7 +188,7 @@ function messageOnChannel(m, e, c) {
 					doc.points	= m.points;
 					doc.level	= m.level;
 					doc.rank	= doc.rank;
-					doc.hashId	= m.hashId;
+					doc.hashUid	= m.hashUid;
 					doc.userId	= m.userId;
 					doc.correct	= 2;
 					doc.sender  = "updateScoreCard";
@@ -210,7 +210,7 @@ function messageOnChannel(m, e, c) {
 
         } 
         else if ( m.sender == "updateScoreCard" ) {  
-            console.log( "updateScoreCard " + JSON.stringify(m) );
+            console.log( "updateScoreCard - Message/Reply from user " + JSON.stringify(m) );
         }        
         else if ( m.sender == "server" ) {  
            
