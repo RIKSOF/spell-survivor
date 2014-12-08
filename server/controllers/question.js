@@ -29,43 +29,49 @@ exports.getAudioUrl("Apple",function( resultObj ){
 exports.getQuestion = function(difficultyLevel, callBack) {
 
     if ( secrets.mysqlConnection ) {
-        var r1= parseInt( Math.random()*( Math.random()*99999) );
-        
-        var queryString = "Select * from words Limit "+r1+", 4"
-        //console.log(queryString);
 
-        secrets.mysqlConnection.query(queryString, function(err, rows, fields) {
+        // get row count for this difficulty level
+        var queryString1 = "Select COUNT(*) as rowCount from words where level = " + difficultyLevel;
+
+        secrets.mysqlConnection.query(queryString1, function(err, rows, fields) {
             if (err) { 
                 console.log(err);
             }
- 
-            var ques1 = [];
-            var options = [];
-
+            
             for (var i in rows) {
-                options.push(rows[i].word);
-               
+                var count = rows[i].rowCount;
             }
-                                                
-            ques1   =    { "id":getUniqueId(), "a":options[getRendom(0,3)], "options":options, sender:"server"};
-            exports.getAudioUrl(ques1, callBack);
+           
+            var r1= parseInt( Math.random()*( Math.random()*count) );
+          
+            var queryString2 = "Select * from words where level =" + difficultyLevel + " Limit "+r1+", 1";
+            
+            secrets.mysqlConnection.query(queryString2, function(err, rows, fields) {
+                if (err) { 
+                    console.log(err);
+                }
+     
+                var ques1 = [];
+                var options = [];
 
-            //console.log(ques1);
+                for (var i in rows) {
+                    options.push(rows[i].word);
+                    options.push(rows[i].option_1);
+                    options.push(rows[i].option_2);
+                    options.push(rows[i].option_3);
+                }
+
+                ques1   =    { "id":getUniqueId(), "a":options[getRendom(0,3)], "options":options, sender:"server"};
+                exports.getAudioUrl(ques1, callBack);
+            });
+                                             
+           
         });
+
     } else {
         console.log('No MYSQL CONNECTION');
     }
 
-    
-    // query to sql, to get word,
-    // get audio for this word
-    
-    // response to request
-    //question = questionAry[Math.floor(Math.random() * 4)];
-    //question['audioUrl'] = "http://media.tts-api.com/d0be2dc421be4fcd0172e5afceea3970e2f3d940.mp3";
-    
-    // execute callback
-	//callBack({question:question});
 };
 
 
