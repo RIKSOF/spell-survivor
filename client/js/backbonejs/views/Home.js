@@ -259,6 +259,7 @@ HomeView = Backbone.View.extend({
 		this.audioTheme.pause();
 		this.$el.find('.logotext').animate({top:"-120%"},500);
 		this.$el.find('.mainmenu').animate({bottom:"-220%"},500);
+		this.loadPlank();
 	},
 	
 	correctSound: function(){
