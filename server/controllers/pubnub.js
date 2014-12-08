@@ -88,8 +88,8 @@ exports.publishPubnub= function(channel, message) {
         // question is posted, now set null to questionToPost            
         questionToPost = null;
 
-        // ask for another question
-        questionController.getQuestion(4, getQuestionCallback);
+        // ask for another question, pass level 1 for now
+        questionController.getQuestion(1, getQuestionCallback);
 
     } else {
 
@@ -240,7 +240,7 @@ exports.subscribePubnub( CHANNEL_NAME );
 setInterval( function() {
 
     if ( questionToPost == null ) {
-        questionController.getQuestion(4, getQuestionCallback);
+        questionController.getQuestion(1, getQuestionCallback);
     } else {
         exports.publishPubnub( CHANNEL_NAME, questionToPost );
     }
