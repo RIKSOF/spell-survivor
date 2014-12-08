@@ -75,6 +75,7 @@ exports.publishPubnub= function(channel, message) {
         answerList[ message.id ] = message.a ;
         currentQuestionId = message.id;
 
+		//Delete answer for security purpose
         delete message.a;
 
         RS_PUBNUB.publish({ 
@@ -117,8 +118,7 @@ W
 */
 function messageOnChannel(m, e, c) {
 
-    console.log('messageOnChannel');
-    console.log('Channel name: ' + c);
+    console.log('messageOnChannel - Channel name: ' + c);
 
     if ( m ) {
         
@@ -210,7 +210,7 @@ function messageOnChannel(m, e, c) {
 
         } 
         else if ( m.sender == "updateScoreCard" ) {  
-            console.log( "updateScoreCard " + JSON.stringify(m) );
+            console.log( "updateScoreCard - Message/Reply from user " + JSON.stringify(m) );
         }        
         else if ( m.sender == "server" ) {  
            
