@@ -1,7 +1,8 @@
+var secrets = require('../config/secrets');
 
 var RS_PUBNUB = null;
 var CURRENT_CHANNEL = null;
-var CHANNEL_NAME = 'spell-survivor-level1';
+var CHANNEL_NAME = 'spell-survivor-level1-rufi';
 var MAX_SCORE = 100;
 var QUESTION_POST_MAX_TIME = 15000; // In milli second
 var SCORE_DEDUCT_PER_SECOND = 2;
@@ -13,6 +14,7 @@ var channels = new Array();
 var scores = new Array();
 var answerList = [];
 var serverStarted = false;
+var game_level = 1;
 
 var questionController = require( __dirname + '/question');
 var userController = require( __dirname + '/user');
@@ -174,19 +176,23 @@ function messageOnChannel(m, e, c) {
 				else{
 					//for safe side
 					m.points	=	(m.points == undefined ) ? 0 : m.points;
-					m.level		=	(m.level == undefined ) ? 0 : m.level;
+					m.level		=	(m.level == undefined ) ? 1 : m.level;
+					m.rank		=	(m.rank == undefined ) ? 0 : m.rank;					
 					m.channel	=	(m.channel == undefined ) ? CHANNEL_NAME : m.channel;
 					m.hashId	=	(m.hashId == undefined ) ? 0 : m.hashId;
 					m.userId	=	(m.userId == undefined ) ? 0 : m.userId;
 					
+					
 					var doc = {};
 					//Vars required When user select the option[ for new user send the default values ]
 					doc.points	= m.points;
-					doc.level	= secrets.levels[m.channel];
-					doc.rank	= 1; 
+					doc.level	= m.level;
+					doc.rank	= doc.rank;
 					doc.hashId	= m.hashId;
-					doc.userId	= m.userId;		  		  
-
+					doc.userId	= m.userId;
+					doc.correct	= 2;
+					doc.sender  = "updateScoreCard";
+					doc.channel = m.channel;
 					//server can create these vars if not found
 					doc.lastUpdated = ""+ new Date();
 					
