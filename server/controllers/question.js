@@ -1,5 +1,6 @@
 var request = require('request');
 var secrets = require('../config/secrets');
+var gameLevel = 1;
 /**
 * Conver text into audio.
 * @word: String < Apple >
@@ -29,10 +30,13 @@ exports.getAudioUrl("Apple",function( resultObj ){
 exports.getQuestion = function(difficultyLevel, callBack) {
 
     if ( secrets.mysqlConnection ) {
-
+		
+		if ( gameLevel > 7 ) {
+			gameLevel = 1;
+		}
         // get row count for this difficulty level
-        var queryString1 = "Select COUNT(*) as rowCount from words where level = " + difficultyLevel;
-
+        var queryString1 = "Select COUNT(*) as rowCount from words where level = " + gameLevel;
+		console.log(queryString1);
         secrets.mysqlConnection.query(queryString1, function(err, rows, fields) {
             if (err) { 
                 console.log(err);
@@ -44,8 +48,12 @@ exports.getQuestion = function(difficultyLevel, callBack) {
            
             var r1= parseInt( Math.random()*( Math.random()*count) );
           
-            var queryString2 = "Select * from words where level =" + difficultyLevel + " Limit "+r1+", 1";
+            var queryString2 = "Select * from words where level =" + gameLevel + " Limit "+r1+", 1";
             
+			// increase game level for next question
+			gameLevel++;
+			
+			
             secrets.mysqlConnection.query(queryString2, function(err, rows, fields) {
                 if (err) { 
                     console.log(err);
@@ -65,7 +73,7 @@ exports.getQuestion = function(difficultyLevel, callBack) {
                 exports.getAudioUrl(ques1, callBack);
             });
                                              
-           
+            
         });
 
     } else {
