@@ -20,7 +20,7 @@ var app = {
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
-	channel: "spell-survivor-level1",
+	channel: "spell-survivor-level1-rufi",
 	
 	question: null,
 	scoreCard: null,
@@ -73,6 +73,18 @@ var app = {
 				if ( message.sender == "updateScoreCard" ) {
 					if ( app.getSession() == message.hashUid ) {
 						app.scoreCard.set(message);
+						
+						// check if points are sent by the server correctly
+						if ( message.points != undefined ) {
+							var data = {
+								points: message.points,
+								rank: message.rank,
+								level: message.level
+							};
+							
+							// update the session data by new values given from the server & database
+							app.setSessionData(data);
+						}
 					}
 				}
 				
@@ -80,14 +92,22 @@ var app = {
 		});
 	},
 	
+	// publish the message to the pubnub 
 	pubnubPublish: function (qId,opt) {
+		
+		sessionData = app.getSessionData();
 		var response = {
 			userId: "anonymous",
 			hashUid: this.getSession(),
 			channel: this.channel,
 			id: qId,
 			sel_option: opt,
-			sender: "user"
+			sender: "user",
+			
+			points: sessionData.points,
+			rank: sessionData.rank,
+			level: sessionData.level
+			
 		};
 		
 		app.pubnub.publish({
@@ -120,9 +140,32 @@ var app = {
 		} else {
 			session = this.getRendom();
 			sessionStorage.setItem("userId",session);
+			
+			// keep default values for points, rank and level
+			sessionStorage.setItem("points",0);
+			sessionStorage.setItem("rank",0);
+			sessionStorage.setItem("level",0);
+			
 		}
 		
 		return session;
+	},
+	
+	getSessionData: function () {
+		// get session data
+		var data = {
+			points: sessionStorage.getItem("points"),
+			rank: sessionStorage.getItem("rank"),
+			level: sessionStorage.getItem("level")
+		}
+		return data;
+	},
+	
+	setSessionData: function (data) {
+		// set session data
+		sessionStorage.setItem("points",data.points);
+		sessionStorage.setItem("rank",data.rank);
+		sessionStorage.setItem("level",data.level);
 	},
 	
 	getRendom: function() {

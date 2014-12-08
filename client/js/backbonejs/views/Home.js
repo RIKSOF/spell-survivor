@@ -46,7 +46,8 @@ HomeView = Backbone.View.extend({
  			clearTimeout(value);
 		});
 		
-		$.each( this.AnimateObj, function( key, value ) {
+		$.each( this.AnimateObj, function( key, value ) { 
+		    console.log("skipAnimation value", value);
  			value.stop();
 		});
 		
@@ -181,10 +182,16 @@ HomeView = Backbone.View.extend({
 							_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mountainsmallshadow').animate({height:"161px"},9000,function(){
 								$(".skipbutton").hide();	
 							});
+							_home.timeOut[_home.timeCounter++] = setTimeout(function(){
+								 //_home.audioTheme.pause();
+								_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mainmenu').animate({bottom:"18%"},500);
+								_home.titleAnimate2();
+					//			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
+							},11000);
 							
 						},3000);
 					});
-				},3500);		
+				},3500);
 			});
 		},3000);
 		
@@ -193,12 +200,7 @@ HomeView = Backbone.View.extend({
 		},35000);*/
 		
 		
-		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
-			 //_home.audioTheme.pause();
-			_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mainmenu').animate({bottom:"18%"},500);
-			_home.titleAnimate2();
-//			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
-		},35000);
+		
 	},
 	
 	animatePlank: function(){
@@ -217,6 +219,8 @@ HomeView = Backbone.View.extend({
 		var _home = this;
 		this.$el.find('.logotext').animate({top:"-120%"},500);
 		this.$el.find('.mainmenu').animate({bottom:"-220%"},500,function(){
+			_home.$el.find(".plankboard").css("z-index",9);
+			_home.$el.find(".plankhowto").parent().css("z-index",99);
 			_home.$el.find(".plankhowto").animate({left:0},500,function(){
 				_home.$el.find(".backbutton").show();
 				_home.$el.find(".backbutton").attr("id","backHowto");
@@ -228,6 +232,8 @@ HomeView = Backbone.View.extend({
 		var _home = this;
 		this.$el.find('.logotext').animate({top:"-120%"},500);
 		this.$el.find('.mainmenu').animate({bottom:"-220%"},500,function(){
+			_home.$el.find(".plankboard").css("z-index",9);
+			_home.$el.find(".plankteam").parent().css("z-index",99);
 			_home.$el.find(".plankteam").animate({left:0},500,function(){
 				_home.$el.find(".backbutton").show();
 				_home.$el.find(".backbutton").attr("id","backTeam");
@@ -238,6 +244,7 @@ HomeView = Backbone.View.extend({
 	backtoMenu:function(){
 		var _home = this;
 		this.$el.find(".backbutton").hide();
+		_home.$el.find(".plankboard").css("z-index",9);
 		this.$el.find(".plankhowto").animate({left:'-150%'},500,function(){
 			_home.$el.find('.logotext').animate({top:"13%"},500);
 			_home.$el.find('.mainmenu').animate({bottom:"18%"},500);
@@ -248,6 +255,7 @@ HomeView = Backbone.View.extend({
 	backtoMenuTeam:function(){
 		var _home = this;
 		this.$el.find(".backbutton").hide();
+		_home.$el.find(".plankboard").css("z-index",9);
 		this.$el.find(".plankteam").animate({left:'-150%'},500,function(){
 			_home.$el.find('.logotext').animate({top:"13%"},500);
 			_home.$el.find('.mainmenu').animate({bottom:"18%"},500);
@@ -263,7 +271,7 @@ HomeView = Backbone.View.extend({
 	},
 	
 	correctSound: function(){
-		this.audioCorrect.play();
+		this.audioIncorrect.play();
 	},
 	
 	incorrectSound: function(){
