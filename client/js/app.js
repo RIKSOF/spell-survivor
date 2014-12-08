@@ -36,6 +36,7 @@ var app = {
 	},
 	
 	pubnubInit: function (){
+		// called from Home.js when StartGame
 		this.pubnub = PUBNUB.init({
 			publish_key: this.publishKey,
 			subscribe_key: this.subscribeKey
@@ -72,6 +73,7 @@ var app = {
 				
 				if ( message.sender == "updateScoreCard" ) {
 					if ( app.getSession() == message.hashUid ) {
+						
 						app.scoreCard.set(message);
 						
 						// check if points are sent by the server correctly
@@ -84,6 +86,16 @@ var app = {
 							
 							// update the session data by new values given from the server & database
 							app.setSessionData(data);
+						}
+						
+						// check if flag is sent by the server correctly
+						if ( message.correct != undefined ) {
+							
+							if ( message.correct == 1 ) {
+								app.home.fastestSound();
+							} else {
+								app.home.incorrectSound();
+							}
 						}
 					}
 				}
