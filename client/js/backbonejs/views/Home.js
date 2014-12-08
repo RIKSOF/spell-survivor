@@ -60,7 +60,7 @@ HomeView = Backbone.View.extend({
 		e.preventDefault();
 		if ( !this.clickDisable ) {
 			
-			this.animatePlank();
+			this.animatePlank(false);
 			
 			var selectOpt = e.currentTarget.innerHTML;
 			app.pubnubPublish(app.question.get("id"),selectOpt);
@@ -122,10 +122,16 @@ HomeView = Backbone.View.extend({
 		_home.$el.find(".plankboard").css("z-index",9);
 		_home.$el.find(".plank").parent().css("z-index",99);
 		_home.$el.find('.scoreboard').animate({left:0},500);
+		
+		// hide options before plank
+		
+		_home.$el.find(".options").hide();
+		
 		_home.$el.find(".plank").animate({left:0},500,function(){
 			_home.$el.find(".timerMain").animate({top:0},500);
 			// init the quiz
 			app.pubnubInit();
+			_home.messageWait();
 		});
 	},
 	
@@ -207,14 +213,22 @@ HomeView = Backbone.View.extend({
 		
 	},
 	
-	animatePlank: function(){
+	animatePlank: function(show){
 		var _home = this;
+		if ( show ) {
+			_home.$el.find(".options").show();
+			_home.messageWaitOut();
+		} else {
+			_home.$el.find(".options").hide();
+			_home.messageWait();
+		}
 		this.$el.find("#options1").parent().animate({left:'-350%'},500,function(){
 			
 		});
 		this.$el.find("#options2").parent().animate({right:'-350%'},500);
 		this.$el.find("#options3").parent().animate({left:'-350%'},500);
 		this.$el.find("#options4").parent().animate({right:'-350%'},500);
+		
 	},
 	
 	Mainmenu: function(){
@@ -292,8 +306,12 @@ HomeView = Backbone.View.extend({
 		this.audioClick.play();
 	},
 	
-	wait: function(){
+	messageWait: function(){
 		this.$el.find(".waiting").animate({bottom:'40%'},500);		
+	},
+	
+	messageWaitOut: function(){
+		this.$el.find(".waiting").animate({bottom:'-240%'},500);		
 	}
 	
 });

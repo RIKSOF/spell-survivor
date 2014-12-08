@@ -52,7 +52,7 @@ var app = {
 				if ( message.sender == "server" ) {
 					
 					//
-					app.home.animatePlank();
+					app.home.animatePlank(true);
 					// set current answer
 					currentMessage = message;
 					

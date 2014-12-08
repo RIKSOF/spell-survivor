@@ -70,9 +70,9 @@ body{ background:url(../images/riksof.png) no-repeat center center; opacity:0; o
 .skipbutton a{font-family:DriftWood; font-size:38px; color:#271201; text-align:center; line-height:70px; text-align:center; width:159px; height:77px; display:block;}
 .timerMain{ width:65px; height:65px; margin:auto; left:31px; position:relative; top:-100px;}
 .timer{ background:#fff; width:60px; height:60px; border:2px solid #50b301; border-radius:68px; color:#50b301; font-family:ErasITC-Bold; font-size:36px; text-align:center; line-height:60px;}
-.cactus{background:url(../images/cactus.png) bottom center no-repeat; background-size:contain; width:341px; height:446px; position:fixed; z-index:6; right:-100%; bottom:0px;}
+.cactus{background:url(../images/cactus.png) bottom center no-repeat; background-size:contain; width:341px; height:446px; position:fixed; z-index:999; right:-100%; bottom:0px;}
 .mainmenu{ width:100%; position:absolute; z-index:10; bottom:-220%;}
 .mainmenu ul{ width:413px; margin:auto;}
 .mainmenu li{ background:url(../images/mainbutton.png) bottom center no-repeat; background-size:contain; width:413px; height:88px; cursor:pointer; font-family:DriftWood; font-size:38px; color:#271201; text-align:center; line-height:88px; margin-bottom:30px;}
 .hometitle{ font-family:RioGrande-Bold; color:#592b03; font-size:120; text-align:center; width:100%; line-height:72px; z-index:9; position:fixed; top:13%;}
-.waiting{ font-family:RioGrande-Bold; color:#fff; font-size:96px; text-align:center; width:100%; line-height:72px; z-index:99; position:fixed; bottom:-240%; }
+.waiting{ font-family:RioGrande-Bold; color:#fff; font-size:72px; text-align:center; width:100%; line-height:72px; z-index:99; position:fixed; bottom:-240%; }
