@@ -22,7 +22,6 @@ HomeView = Backbone.View.extend({
 		var template = _.template($('#homeTemplate').html(), {});
 		this.$el.html(template);
 		
-		this.audioClick.setAttribute('src', 'audio/bullet.mp3');
 		this.initAnimation();
 	},
 	
@@ -146,10 +145,11 @@ HomeView = Backbone.View.extend({
 	
 	initAnimation: function () {
 		//Audio theme start
-		
-		this.audioFastest.setAttribute('src', 'audio/sound.mp3');
+		this.audioClick.setAttribute('src', 'audio/bullet.mp3');
+		this.audioFastest.setAttribute('src', 'audio/shout.mp3');
 		this.audioCorrect.setAttribute('src', 'audio/click.mp3');
 		this.audioIncorrect.setAttribute('src', 'audio/cow.mp3');
+
         this.audioTheme.setAttribute('src', 'audio/theme.mp3');
         this.audioTheme.setAttribute('autoplay', 'autoplay');
         //audioElement.load()
