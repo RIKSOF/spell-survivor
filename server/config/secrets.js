@@ -18,8 +18,8 @@
 var config = {};
 config.mysql = {};
 config.mysql.user		= "root";
-config.mysql.password	= "root";
-config.mysql.host		= "localhost";
+config.mysql.password	= "rufi123";
+config.mysql.host		= "zzlalani.koding.io";
 //config.mysql.port		= "3306";
 config.mysql.database			= "wordsdb";
 

@@ -95,14 +95,15 @@ exports.saveScore = function(m, callback) {
                 } else {
                     console.log('score save Saved');
                     data = {
-                        userId: scr.userId,
-                        hashUid: scr.hashUid,
-                        lastUpdated: scr.lastUpdated,
-                        channel: scr.channel,
-                        rank: scr.rank,
-                        level: scr.level,
                         points: scr.points,
-                        sender: "updateScoreCard"
+                        level: scr.level,
+						rank: scr.rank,
+                        hashUid: scr.hashUid,
+                        userId: scr.userId,						
+						correct:1,
+                        sender: "updateScoreCard",                        
+                        channel: scr.channel,	
+						lastUpdated: scr.lastUpdated
                     };
 
                     callback(data);
