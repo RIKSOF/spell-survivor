@@ -20,7 +20,7 @@ var app = {
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
-	channel: "spell-survivor-level1-rufi",
+	channel: "spell-survivor-level1-rufi1",
 	
 	question: null,
 	scoreCard: null,
@@ -77,7 +77,7 @@ var app = {
 						app.scoreCard.set(message);
 						
 						// check if points are sent by the server correctly
-						if ( message.points != undefined ) {
+						if ( message.points != undefined && message.level != undefined && message.rank != undefined ) {
 							var data = {
 								points: message.points,
 								rank: message.rank,
@@ -149,6 +149,7 @@ var app = {
 		var session = "";
 		if ( sessionStorage.getItem("userId") != null ) {
 			session = sessionStorage.getItem("userId");
+			
 		} else {
 			session = this.getRendom();
 			sessionStorage.setItem("userId",session);

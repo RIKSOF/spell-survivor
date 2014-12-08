@@ -23,6 +23,9 @@ HomeView = Backbone.View.extend({
 		this.$el.html(template);
 		
 		this.initAnimation();
+		
+		var sessionData = app.getSessionData();
+		this.$el.find(".scoreboard").html(sessionData.points);
 	},
 	
 	events: {
@@ -54,10 +57,10 @@ HomeView = Backbone.View.extend({
 	},
 	
 	clickOption: function (e) {
+		e.preventDefault();
 		if ( !this.clickDisable ) {
 			
 			this.animatePlank();
-			e.preventDefault();
 			
 			var selectOpt = e.currentTarget.innerHTML;
 			app.pubnubPublish(app.question.get("id"),selectOpt);
