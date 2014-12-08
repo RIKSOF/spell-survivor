@@ -30,11 +30,13 @@ HomeView = Backbone.View.extend({
 		"click .options li a":"clickOption",
 		"click .skipbutton":"skipAnimation",
 		"click #howtoplay":"howtoPlay",
+		"click #teamriksof":"teamRiksof",
 		"click .clickSound":"clickSound",
 		"click #correctsample":"correctSound",
 		"click #incorrectsample":"incorrectSound",
 		"click #fastestsample":"fastestSound",
-		"click .backbutton":"backtoMenu",
+		"click #backHowto":"backtoMenu",
+		"click #backTeam":"backtoMenuTeam",
 		"click #startgame":"startGame",
 	},
 	
@@ -64,6 +66,29 @@ HomeView = Backbone.View.extend({
 			app.resetAudio();
 			this.clickDisable = true;
 		}
+	},
+	
+	titleAnimate2:function(){
+		var _home = this;
+		var getFormData = function () {
+			var data = { 
+				loop: false, 
+				in: { callback: "", effect: "bounceInDown", reverse: false, shuffle: true, sync: false }, 
+				out: { callback: "", effect: "", reverse: false, shuffle: true, sync: false }
+			};
+			return data;
+		};
+		
+		var $tlt = _home.$el.find('.logotext')
+		  .on('start.tlt', '')
+		  .on('inAnimationBegin.tlt', '')
+		  .on('inAnimationEnd.tlt', '')
+		  .on('outAnimationBegin.tlt', '')
+		  .on('outAnimationEnd.tlt', '')
+		  .on('end.tlt', '');
+		
+		var obj = getFormData();
+		$tlt.textillate(obj);	
 	},
 	
 	titleAnimate:function(){
@@ -112,10 +137,11 @@ HomeView = Backbone.View.extend({
 		_home.$el.find('.mountainsmall').css({opacity:1});
 		_home.$el.find('.mountainlargeshadow').css({height:"104px"});
 		_home.$el.find('.mountainsmallshadow').css({height:"161px"});
-		_home.titleAnimate();
+		_home.$el.find('.logotext').css({top:"13%"});
 		setTimeout(function(){
+			_home.titleAnimate2();
 			_home.Mainmenu();
-		},7000);
+		},1000);
 	},
 	
 	initAnimation: function () {
@@ -162,16 +188,17 @@ HomeView = Backbone.View.extend({
 			});
 		},3000);
 		
-		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
+		/*_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 			_home.AnimateObj[_home.AnimateCounter++] = _home.titleAnimate();
-		},35000);
+		},35000);*/
 		
 		
 		_home.timeOut[_home.timeCounter++] = setTimeout(function(){
 			 //_home.audioTheme.pause();
-			_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mainmenu').animate({bottom:"30%"},500);
+			_home.AnimateObj[_home.AnimateCounter++] = _home.$el.find('.mainmenu').animate({bottom:"18%"},500);
+			_home.titleAnimate2();
 //			_home.AnimateObj[_home.AnimateCounter++] = _home.loadPlank();
-		},43000);
+		},35000);
 	},
 	
 	animatePlank: function(){
@@ -183,29 +210,54 @@ HomeView = Backbone.View.extend({
 	},
 	
 	Mainmenu: function(){
-		this.$el.find('.mainmenu').animate({bottom:"30%"},500);
+		this.$el.find('.mainmenu').animate({bottom:"15%"},500);
 	},
 	
 	howtoPlay: function(){
 		var _home = this;
+		this.$el.find('.logotext').animate({top:"-120%"},500);
 		this.$el.find('.mainmenu').animate({bottom:"-220%"},500,function(){
 			_home.$el.find(".plankhowto").animate({left:0},500,function(){
 				_home.$el.find(".backbutton").show();
+				_home.$el.find(".backbutton").attr("id","backHowto");
 			});	
 		});
-		
+	},
+	
+	teamRiksof: function(){
+		var _home = this;
+		this.$el.find('.logotext').animate({top:"-120%"},500);
+		this.$el.find('.mainmenu').animate({bottom:"-220%"},500,function(){
+			_home.$el.find(".plankteam").animate({left:0},500,function(){
+				_home.$el.find(".backbutton").show();
+				_home.$el.find(".backbutton").attr("id","backTeam");
+			});	
+		});
 	},
 	
 	backtoMenu:function(){
 		var _home = this;
 		this.$el.find(".backbutton").hide();
 		this.$el.find(".plankhowto").animate({left:'-150%'},500,function(){
-			_home.$el.find('.mainmenu').animate({bottom:"30%"},500);
+			_home.$el.find('.logotext').animate({top:"13%"},500);
+			_home.$el.find('.mainmenu').animate({bottom:"18%"},500);
+			_home.$el.find(".backbutton").attr("id","backHowto");
+		});
+	},
+	
+	backtoMenuTeam:function(){
+		var _home = this;
+		this.$el.find(".backbutton").hide();
+		this.$el.find(".plankteam").animate({left:'-150%'},500,function(){
+			_home.$el.find('.logotext').animate({top:"13%"},500);
+			_home.$el.find('.mainmenu').animate({bottom:"18%"},500);
+			_home.$el.find(".backbutton").attr("id","backHowto");
 		});
 	},
 	
 	startGame:function(){
 		this.audioTheme.pause();
+		this.$el.find('.logotext').animate({top:"-120%"},500);
 		this.$el.find('.mainmenu').animate({bottom:"-220%"},500);
 	},
 	
