@@ -208,8 +208,10 @@ HomeView = Backbone.View.extend({
 	},
 	
 	animatePlank: function(){
-		
-		this.$el.find("#options1").parent().animate({left:'-350%'},500);
+		var _home = this;
+		this.$el.find("#options1").parent().animate({left:'-350%'},500,function(){
+			
+		});
 		this.$el.find("#options2").parent().animate({right:'-350%'},500);
 		this.$el.find("#options3").parent().animate({left:'-350%'},500);
 		this.$el.find("#options4").parent().animate({right:'-350%'},500);
@@ -288,6 +290,10 @@ HomeView = Backbone.View.extend({
 	
 	clickSound: function(){
 		this.audioClick.play();
+	},
+	
+	wait: function(){
+		this.$el.find(".waiting").animate({bottom:'40%'},500);		
 	}
 	
 });

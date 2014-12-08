@@ -53,7 +53,6 @@ var app = {
 					
 					//
 					app.home.animatePlank();
-					
 					// set current answer
 					currentMessage = message;
 					

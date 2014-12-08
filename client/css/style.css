@@ -75,3 +75,4 @@ body{ background:url(../images/riksof.png) no-repeat center center; opacity:0; o
 .mainmenu ul{ width:413px; margin:auto;}
 .mainmenu li{ background:url(../images/mainbutton.png) bottom center no-repeat; background-size:contain; width:413px; height:88px; cursor:pointer; font-family:DriftWood; font-size:38px; color:#271201; text-align:center; line-height:88px; margin-bottom:30px;}
 .hometitle{ font-family:RioGrande-Bold; color:#592b03; font-size:120; text-align:center; width:100%; line-height:72px; z-index:9; position:fixed; top:13%;}
+.waiting{ font-family:RioGrande-Bold; color:#fff; font-size:96px; text-align:center; width:100%; line-height:72px; z-index:99; position:fixed; bottom:-240%; }
