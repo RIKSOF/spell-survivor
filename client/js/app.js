@@ -20,7 +20,7 @@ var app = {
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
-	channel: "spell-survivor-level1-rufi",
+	channel: "spell-survivor-level1-rufi1",
 	
 	question: null,
 	scoreCard: null,
@@ -52,8 +52,7 @@ var app = {
 				if ( message.sender == "server" ) {
 					
 					//
-					app.home.animatePlank();
-					
+					app.home.animatePlank(true);
 					// set current answer
 					currentMessage = message;
 					
@@ -77,11 +76,11 @@ var app = {
 						app.scoreCard.set(message);
 						
 						// check if points are sent by the server correctly
-						if ( message.points != undefined ) {
+						if ( message.points != undefined && message.rank != undefined ) {
 							var data = {
 								points: message.points,
 								rank: message.rank,
-								level: message.level
+								level: 1
 							};
 							
 							// update the session data by new values given from the server & database
@@ -149,6 +148,7 @@ var app = {
 		var session = "";
 		if ( sessionStorage.getItem("userId") != null ) {
 			session = sessionStorage.getItem("userId");
+			
 		} else {
 			session = this.getRendom();
 			sessionStorage.setItem("userId",session);
@@ -156,7 +156,7 @@ var app = {
 			// keep default values for points, rank and level
 			sessionStorage.setItem("points",0);
 			sessionStorage.setItem("rank",0);
-			sessionStorage.setItem("level",0);
+			sessionStorage.setItem("level",1);
 			
 		}
 		
