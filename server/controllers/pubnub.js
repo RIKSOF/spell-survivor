@@ -88,8 +88,8 @@ exports.publishPubnub= function(channel, message) {
         // question is posted, now set null to questionToPost            
         questionToPost = null;
 
-        // ask for another question
-        questionController.getQuestion(4, getQuestionCallback);
+        // ask for another question, pass level 1 for now
+        questionController.getQuestion(1, getQuestionCallback);
 
     } else {
 
@@ -122,13 +122,14 @@ function messageOnChannel(m, e, c) {
         
         if ( m.sender == "user" ) {  
             
+
             // if user reply on current question
             if ( m.id == currentQuestionId ) {
                 
                 console.log( "Message/Reply from user " + JSON.stringify(m) );
     
-                // if answer is correct
-                if ( m.sel_option == answerList[currentQuestionId] ) { 
+                // if answer is correct [Reply to all about some one answered with userId(who have answered)].
+                if ( m.sel_option == answerList[currentQuestionId] ) {
 
 					console.log( "in pubnub line 133 - Correct answer was received");
 					
@@ -138,32 +139,74 @@ function messageOnChannel(m, e, c) {
                     m.points = Math.round( MAX_SCORE -  (diff * SCORE_DEDUCT_PER_SECOND) );
 
 					/*
-                    console.log('diff : ' + diff);
-                    console.log('SCORE_DEDUCT_PER_SECOND : ' + SCORE_DEDUCT_PER_SECOND);
-                    console.log('Poinst : ' + points);
-                    console.log('Answer : ' + answerList[currentQuestionId]);
+                    console.log( { 
+						diff: diff,
+						SCORE_DEDUCT_PER_SECOND : SCORE_DEDUCT_PER_SECOND,
+						Poinst : points,
+						Answer : answerList[currentQuestionId] 
+					} );
 					*/
-
+					
                     // remove answer from list
                     delete answerList[currentQuestionId];
 					
+                   // m.channel   =   channel;
+
 					//When we recived a correct answer, broadcast to all we have received a correct answer,
-					//Update the score card of the user where the {hashId: m.hashId, userId: m.userId} are matched
-					userController.saveScore( m, function( doc ){
-						console.log(  "update score card ot the user : "+ doc );
+					//Update the score card of the user where the {hashUid: m.hashUid, userId: m.userId} are matched
+					userController.saveScore( m, function( src ){
+						
 						if ( RS_PUBNUB != null ) {
+                           
+                            console.log(  "update score card of the user : ", src );
 					        RS_PUBNUB.publish({ 
-					            channel   : channel,
-					            message   : doc,
+					            channel   : src.channel,
+					            message   : src,
 					            callback  : displayCallback,
 					            error     : displayCallback
 					        });
-					    }
+					    } else {
+                            console.log('RS_PUBNUB is null at 167');
+                        }
 					});
                 }
+				// else answer is wrong/correct but late [Reply to all about some one answered with userId(who have answered)].
+				else{
+					//for safe side
+					m.points	=	(m.points == undefined ) ? 0 : m.points;
+					m.level		=	(m.level == undefined ) ? 0 : m.level;
+					m.channel	=	(m.channel == undefined ) ? CHANNEL_NAME : m.channel;
+					m.hashId	=	(m.hashId == undefined ) ? 0 : m.hashId;
+					m.userId	=	(m.userId == undefined ) ? 0 : m.userId;
+					
+					var doc = {};
+					//Vars required When user select the option[ for new user send the default values ]
+					doc.points	= m.points;
+					doc.level	= secrets.levels[m.channel];
+					doc.rank	= 1; 
+					doc.hashId	= m.hashId;
+					doc.userId	= m.userId;		  		  
+
+					//server can create these vars if not found
+					doc.lastUpdated = ""+ new Date();
+					
+					
+					channel	=	m.channel;
+
+					if ( RS_PUBNUB != null ) {
+					    RS_PUBNUB.publish({ 
+					        channel   : channel,
+					        message   : doc
+					    });
+					}
+				}
             }
 
-        } else {
+        } 
+        else if ( m.sender == "updateScoreCard" ) {  
+            console.log( "updateScoreCard " + JSON.stringify(m) );
+        }        
+        else if ( m.sender == "server" ) {  
            
             // set question posting timestamp
             questionPostTimeStamp = new Date().getTime();
@@ -197,7 +240,7 @@ exports.subscribePubnub( CHANNEL_NAME );
 setInterval( function() {
 
     if ( questionToPost == null ) {
-        questionController.getQuestion(4, getQuestionCallback);
+        questionController.getQuestion(1, getQuestionCallback);
     } else {
         exports.publishPubnub( CHANNEL_NAME, questionToPost );
     }

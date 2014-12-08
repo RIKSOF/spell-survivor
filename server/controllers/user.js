@@ -19,7 +19,7 @@ exports.createUser = function(hashId, channel) {
 
         // If there was an error saving user
         if (err) {
-            console.log(JSON.stringify(err));      
+            console.log(JSON.stringify(err));
         } else {
             console.log('User Saved');
             /*var score = new Score();
@@ -35,7 +35,7 @@ exports.createUser = function(hashId, channel) {
                     console.log('Score Saved');    
                 }
 
-            });*/// end of score saving
+            });*/ // end of score saving
         }
 
     }); // end of user save
@@ -46,64 +46,107 @@ exports.createUser = function(hashId, channel) {
  *
  * Save answer in database
  **/
-exports.saveScore = function( m, callback ) {
+exports.saveScore = function(m, callback) {
 
-	console.log( {msg:"in saveScore fn ", m:m } );
+    console.log({
+        msg: "in saveScore fn ",
+        m: m
+    });
 
-	var query = { hashId: m.hashId, userId: m.userId };
-	
-	Score.findOne(query, function (err, doc){
+    var query = {
+        hashUid: m.hashUid,
+        userId: m.userId
+    };
+    
+    Score.findOne(query, function(err, doc) {
         if (err) {
-			console.log( {msg:"error in save ", err:JSON.stringify(err) } );
-			return;
-        }else{
-		  doc.points	= (doc.points == undefined ) ? m.points : ( doc.points+ m.points) ; 
-		  doc.level		= secrets.levels[m.channel];
-		  doc.rank		= 1;
-		  doc.lastUpdated = ""+ new Date();
+            console.log({
+                msg: "error in save ",
+                err: JSON.stringify(err)
+            });
+            return;
+        } else {
 
-		  doc.hashId	= m.hashId;
-		  doc.userId	= m.userId;
-		  		  
-	  	  doc.save();
-		  
-		  callback( doc );
+            console.log({
+                doc: doc
+            });
+
+            if( doc == null ) {
+
+                doc = new Score();
+                doc.points = 0;
+                doc.level = 0;
+                doc.rank = 0;
+            } 
+            
+            doc.channel = m.channel;
+            doc.points = (doc.points + m.points);
+            doc.level = secrets.levels[m.channel];
+            doc.rank = 1;
+            doc.lastUpdated = "" + new Date();
+            doc.hashUid = m.hashUid;
+            doc.userId = m.userId;
+
+            doc.save(function(err, scr) {
+
+                // If there was an error saving user
+                if (err) {
+                    console.log("socre save error:", JSON.stringify(err));
+                } else {
+                    console.log('score save Saved');
+                    data = {
+                        userId: scr.userId,
+                        hashUid: scr.hashUid,
+                        lastUpdated: scr.lastUpdated,
+                        channel: scr.channel,
+                        rank: scr.rank,
+                        level: scr.level,
+                        points: scr.points,
+                        sender: "updateScoreCard"
+                    };
+
+                    callback(data);
+                }
+            });
+
         }
-	});
+    });
 };
 
 /**
  * Get user current score
  *
-**/
+ **/
 exports.getCurrentScore = function(req, res, next) {
-	res.jsonp({points:1,level:1,rank:1});
-/*
-	var hashId	=	req.query.hashId;
-	var userId	=	req.query.userId;
+    res.jsonp({
+        points: 1,
+        level: 1,
+        rank: 1
+    });
+    /*
+    	var hashId	=	req.query.hashId;
+    	var userId	=	req.query.userId;
 
 
-	var query = {};
-	if( userId != "anonymous" ){
-		query	= { hashId: hashId };
-	}else{
-		query	= { userId: userId };
-	}
-	
-	Score.findOne(query, function (err, doc){
-		var ret = {};
-        if ( err ) {
-            ret.err = JSON.stringify(err));
+    	var query = {};
+    	if( userId != "anonymous" ){
+    		query	= { hashId: hashId };
+    	}else{
+    		query	= { userId: userId };
+    	}
+    	
+    	Score.findOne(query, function (err, doc){
+    		var ret = {};
+            if ( err ) {
+                ret.err = JSON.stringify(err));
 
-        } else {
-		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
-		  doc.level		= secrets.levels[m.channel];
-		  doc.rank		= 1;
-		  doc.lastUpdated = ""+ new Date();
-	  	  doc.save();
-        }
-	});
-	*/
+            } else {
+    		  doc.points	= (doc.points == undefined ) ? m.points ? ( doc.points+ m.points) ; 
+    		  doc.level		= secrets.levels[m.channel];
+    		  doc.rank		= 1;
+    		  doc.lastUpdated = ""+ new Date();
+    	  	  doc.save();
+            }
+    	});
+    	*/
 };
-
-

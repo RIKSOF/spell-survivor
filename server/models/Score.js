@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var scoreSchema = new mongoose.Schema({
 
  userId:String,
+hashUid:String,
  channel:String,
  points:Number,
  level:Number,
