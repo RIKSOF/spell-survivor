@@ -11,6 +11,11 @@ An engaging game multi-player Spelling Bee competition. Helps users learn spelli
 - Similar sounding words shown to ensure correct spelling is known.
 - Scores are saved from previous plays to ensure increasing loyalty.
 
+### Screenshots
+
+![First-Screen](https://dl.dropboxusercontent.com/s/jftk4t02zfmizdw/s1.png)
+![Second-Screen](https://dl.dropboxusercontent.com/s/2w5zxd6xlt9rljc/s2.png)
+
 ### API Used
 - The PubNub Network makes Real-time easy with a Simple Communications API.
 - TTS-API.COM is a high quality free text-to-speech API.
