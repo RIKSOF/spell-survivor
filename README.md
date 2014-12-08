@@ -22,4 +22,4 @@ An engaging game multi-player Spelling Bee competition. Helps users learn spelli
 ### Team Accounts
 - sprint.ly: rehan.ali@riksof.com
 - elance: khurram.ali@riksof.com 
-- odesk: 
+- odesk: khurram.ali@riksof.com
