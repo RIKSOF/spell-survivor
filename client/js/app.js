@@ -77,11 +77,11 @@ var app = {
 						app.scoreCard.set(message);
 						
 						// check if points are sent by the server correctly
-						if ( message.points != undefined && message.level != undefined && message.rank != undefined ) {
+						if ( message.points != undefined && message.rank != undefined ) {
 							var data = {
 								points: message.points,
 								rank: message.rank,
-								level: message.level
+								level: 1
 							};
 							
 							// update the session data by new values given from the server & database
