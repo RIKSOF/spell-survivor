@@ -129,7 +129,9 @@ function messageOnChannel(m, e, c) {
             if ( m.id == currentQuestionId ) {
                 
                 console.log( "Message/Reply from user " + JSON.stringify(m) );
-    
+    			
+				m.level = 1; //for first time level is hardcoded 1, will update logic
+	
                 // if answer is correct [Reply to all about some one answered with userId(who have answered)].
                 if ( m.sel_option == answerList[currentQuestionId] ) {
 
