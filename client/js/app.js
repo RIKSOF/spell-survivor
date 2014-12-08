@@ -20,7 +20,7 @@ var app = {
 	// pubnub creds
 	publishKey: 'demo',
 	subscribeKey: 'demo',
-	channel: "spell-survivor-level1-rufi1",
+	channel: "spell-survivor-level1-game",
 	
 	question: null,
 	scoreCard: null,
